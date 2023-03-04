@@ -20,12 +20,11 @@ So do not expect the perfection from this bot :)
 > - **There must be a favorite rave** in order to permit the recharge to work (there's definitely room for improvement on this)
 > - **Single Robberies: checkbox Full Stamina must be checked**
 
-<!-- # How to use the **bot**
-Inside folder `dist` of the project, you can find a file called `release.js`.
-It's a very big file with all the code necessary for the bot to work.
+# How to use the **bot**
+You can fine here on Github a release ready to use.
 
 In order to start the bot you need to:
-- copy all the content of the file in the clipboard (I suggest CTRL+A to select all and then CTRL+C to copy the selected text)
+- copy all the content of the file `release.js` in the clipboard (I suggest CTRL+A to select all and then CTRL+C to copy the selected text)
 - open the console browser, usually using F12 or through the browser menu
 - paste the content of the file `release.js` in the browser console
 - press ENTER
@@ -37,7 +36,7 @@ Insert the number of the action you want to perform and then press OK button.
 
 The bot will start perform the selected action.
 
-> :warning: **TO STOP the bot**, just refresh the browser. Do not perform the refresh inside rave, you could experience bad behavior :) -->
+> :warning: **TO STOP the bot**, just refresh the browser. Do not perform the refresh inside rave, you could experience bad behavior :)
 
 # Bot settings
 The bot has some settings/parameters that can be customized.
