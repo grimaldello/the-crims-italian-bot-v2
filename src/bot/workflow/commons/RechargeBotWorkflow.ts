@@ -61,7 +61,7 @@ export class RechargeBotWorkflow implements IBotWorkflow {
 
         if(!this.botEventsHandler.getFoundVisitor()) {
             this.logger.info(`Clicking Buy button...`);
-            await this.botDomHelper.moveToElementByQuerySelectorInRadius(DOMElementSelector.BUTTON_BUY_DRUG, 200);
+            await this.botDomHelper.moveToElementByQuerySelectorInRadius(DOMElementSelector.BUTTON_BUY_DRUG, 100);
             await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.BUTTON_BUY_DRUG);
             while(!this.domCoordinateQueue.isLastCoordinate()) {
                 await this.waitUtils.waitMilliSeconds(200);

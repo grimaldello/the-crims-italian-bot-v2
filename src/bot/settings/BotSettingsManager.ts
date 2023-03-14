@@ -12,7 +12,7 @@ export class BotSettingsManager {
                 ticketsStopLimit: 1
             },
             mouse: {
-                numberOfCoordinatesToSkip: 10
+                numberOfCoordinatesToSkip: 8
             },
             logger: {
                 level: LogLevel.INFO
