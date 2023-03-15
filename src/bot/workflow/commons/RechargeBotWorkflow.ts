@@ -29,7 +29,6 @@ export class RechargeBotWorkflow implements IBotWorkflow {
         this.user = container.resolve(User);
         this.logger = container.resolve(Logger);
         this.botSettingsManager = container.resolve(BotSettingsManager);
-
     }
     
     async execute(): Promise<void> {
@@ -59,9 +58,16 @@ export class RechargeBotWorkflow implements IBotWorkflow {
         await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.BUTTON_ENTER_FAVORITE_RAVE);
         await this.waitUtils.waitForLastActionPerformed(BotEvents.ENTER_NIGHTCLUB_DONE);
 
+        await this.waitUtils.waitMilliSeconds(
+            this.botSettingsManager.getBotSettings().rechargeEnergy.millisecondsToWaitAfterEnterRave
+        );
+        
         if(!this.botEventsHandler.getFoundVisitor()) {
             this.logger.info(`Clicking Buy button...`);
-            await this.botDomHelper.moveToElementByQuerySelectorInRadius(DOMElementSelector.BUTTON_BUY_DRUG, 100);
+            await this.botDomHelper.moveToElementByQuerySelectorInRadius(
+                DOMElementSelector.BUTTON_BUY_DRUG,
+                this.botSettingsManager.getBotSettings().rechargeEnergy.pixelsRadiusOfRandomMovementAroundBuyButton
+            );
             await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.BUTTON_BUY_DRUG);
             while(!this.domCoordinateQueue.isLastCoordinate()) {
                 await this.waitUtils.waitMilliSeconds(200);
@@ -70,6 +76,9 @@ export class RechargeBotWorkflow implements IBotWorkflow {
         }
         else {
             this.logger.info("FOUND VISITOR! Exiting...", LogColor.WARNING);
+            await this.waitUtils.waitMilliSeconds(
+                this.botSettingsManager.getBotSettings().rechargeEnergy.millisecondsToWaitAfterEnterRaveIfVisitorInside
+            );
         }
 
         while(this.botEventsHandler.getCurrentEvent() !== BotEvents.EXIT_NIGHTCLUB_DONE) {
@@ -80,11 +89,15 @@ export class RechargeBotWorkflow implements IBotWorkflow {
             else {
                 this.botEventsHandler.setCurrentEvent(BotEvents.EXIT_NIGHTCLUB_DONE);
             }
-            await this.waitUtils.waitMilliSeconds(200);
+            await this.waitUtils.waitMilliSeconds(
+                this.botSettingsManager.getBotSettings().rechargeEnergy.millisecondsToWaitAfterClickExitButton
+            );
         }
         // await this.waitUtils.waitForLastActionPerformed(BotEvents.EXIT_NIGHTCLUB_DONE);
         this.logger.info(`Recharge Done`);
-        await this.waitUtils.waitMilliSeconds(500);
+        await this.waitUtils.waitMilliSeconds(
+            this.botSettingsManager.getBotSettings().rechargeEnergy.millisecondsToWaitAfterExitRave
+        );
     }
 
 }
