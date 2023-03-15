@@ -10,11 +10,11 @@ export class BotSettingsManager {
         this.botSetting = {
             rechargeEnergy: {
                 ticketsStopLimit: 1,
-                millisecondsToWaitAfterEnterRave: 1000,
-                millisecondsToWaitAfterEnterRaveIfVisitorInside: 1000,
-                millisecondsToWaitAfterExitRave: 1000,
-                millisecondsToWaitAfterClickExitButton: 1000,
-                pixelsRadiusOfRandomMovementAroundBuyButton: 200
+                millisecondsToWaitAfterEnterRave: 200,
+                millisecondsToWaitAfterEnterRaveIfVisitorInside: 100,
+                millisecondsToWaitAfterExitRave: 500,
+                millisecondsToWaitAfterClickExitButton: 200,
+                pixelsRadiusOfRandomMovementAroundBuyButton: 100
             },
             mouse: {
                 numberOfCoordinatesToSkip: 8
