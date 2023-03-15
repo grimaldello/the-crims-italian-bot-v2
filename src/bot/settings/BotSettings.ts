@@ -1,7 +1,21 @@
 import { LogLevel } from "../../logger/Logger"
 
 export interface RechargeEnergySettings {
-    ticketsStopLimit: number
+    ticketsStopLimit: number,
+    millisecondsToWaitAfterEnterRave: number,
+    millisecondsToWaitAfterEnterRaveIfVisitorInside: number,
+    millisecondsToWaitAfterExitRave: number,
+    millisecondsToWaitAfterClickExitButton: number,
+    pixelsRadiusOfRandomMovementAroundBuyButton: number
+}
+
+export interface SingleRobberySettings {
+    makeRandomMovement: boolean,
+}
+
+export interface GangRobberySettings {
+    makeRandomMovement: boolean,
+    millisecondsToWaitBeforeCheckButtonAcceptOrDoTheScore: number
 }
 
 export interface Mouse {
@@ -38,4 +52,6 @@ export interface BotSettings {
     detox: DetoxSettings,
     singleAssault: SingleAssaultSettings,
     rechargeEnergy: RechargeEnergySettings
+    singleRobbery: SingleRobberySettings,
+    gangRobbery: GangRobberySettings
 }

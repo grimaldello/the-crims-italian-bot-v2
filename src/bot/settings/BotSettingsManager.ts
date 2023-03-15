@@ -9,7 +9,12 @@ export class BotSettingsManager {
     constructor() {
         this.botSetting = {
             rechargeEnergy: {
-                ticketsStopLimit: 1
+                ticketsStopLimit: 1,
+                millisecondsToWaitAfterEnterRave: 1000,
+                millisecondsToWaitAfterEnterRaveIfVisitorInside: 1000,
+                millisecondsToWaitAfterExitRave: 1000,
+                millisecondsToWaitAfterClickExitButton: 1000,
+                pixelsRadiusOfRandomMovementAroundBuyButton: 200
             },
             mouse: {
                 numberOfCoordinatesToSkip: 8
@@ -30,6 +35,13 @@ export class BotSettingsManager {
                     minRespect: 200,
                     maxRespect: 100000
                 }
+            },
+            singleRobbery: {
+                makeRandomMovement: true
+            },
+            gangRobbery: {
+                makeRandomMovement: true,
+                millisecondsToWaitBeforeCheckButtonAcceptOrDoTheScore: 500
             }
         }
     }

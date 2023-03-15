@@ -85,8 +85,13 @@ export class GangRobberyBotWorkflow implements IBotWorkflow {
                     }
                 }
 
-                await this.waitUtils.waitMilliSeconds(500);
-                await this.botDomHelper.moveFromCurrentCoordinateToRandomCoordinate();
+                await this.waitUtils.waitMilliSeconds(
+                    this.botSettingsManager.getBotSettings().gangRobbery.millisecondsToWaitBeforeCheckButtonAcceptOrDoTheScore
+                );
+                
+                if(this.botSettingsManager.getBotSettings().gangRobbery.makeRandomMovement) {
+                    await this.botDomHelper.moveFromCurrentCoordinateToRandomCoordinate();
+                }
 
             }
             else {

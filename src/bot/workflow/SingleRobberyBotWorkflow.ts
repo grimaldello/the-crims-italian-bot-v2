@@ -79,7 +79,9 @@ export class SingleRobberyBotWorkflow implements IBotWorkflow {
                 await this.rechargeWorkflow.execute();
                 await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.MENU_ROBBERY);
                 await this.waitUtils.waitForLastActionPerformed(BotEvents.ROBBERIES_DONE);
-                await this.botDomHelper.moveFromCurrentCoordinateToRandomCoordinate();
+                if(this.botSettingsManager.getBotSettings().singleRobbery.makeRandomMovement) {
+                    await this.botDomHelper.moveFromCurrentCoordinateToRandomCoordinate();
+                }
             }
         }
     }
