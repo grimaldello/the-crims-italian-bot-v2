@@ -68,8 +68,8 @@ export class BotDOMHelper {
             this.helper.getDOMCoordinateByQuerySelector(querySelector);
 
         if(elementDOMCoordinate) {
-            elementDOMCoordinate.x += this.randomUtils.intBetween(0, radius);
-            elementDOMCoordinate.y += this.randomUtils.intBetween(0, radius);
+            elementDOMCoordinate.x += this.randomUtils.intBetween(-radius, radius);
+            elementDOMCoordinate.y += this.randomUtils.intBetween(-radius, radius);
         }
 
         this.logger.info(`Moving to random point in radius...`);
