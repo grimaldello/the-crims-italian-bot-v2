@@ -92,7 +92,7 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
             if(this.user.stamina >= this.getSingleAssaultStaminaRequired()) {
 
                 this.logger.info(`Clicking on Enter button...`);
-                const nextRaveIndex = this.randomUtils.intBetween(1,6);
+                const nextRaveIndex = this.randomUtils.intBetween(1,8);
                 await this.botDomHelper.moveToElementByQueryAllIndexSelectorAndClick(DOMElementSelector.BUTTON_ENTER_RAVE, nextRaveIndex);
                 await this.waitUtils.waitForLastActionPerformed(BotEvents.ENTER_NIGHTCLUB_DONE);
 
