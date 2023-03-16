@@ -10,10 +10,22 @@ export class BotSettingsManager {
         this.botSetting = {
             rechargeEnergy: {
                 ticketsStopLimit: 1,
-                millisecondsToWaitAfterEnterRave: 200,
-                millisecondsToWaitAfterEnterRaveIfVisitorInside: 100,
-                millisecondsToWaitAfterExitRave: 500,
-                millisecondsToWaitAfterClickExitButton: 200,
+                millisecondsToWaitAfterEnterRave: {
+                    min: 0,
+                    max: 200,
+                },
+                millisecondsToWaitAfterEnterRaveIfVisitorInside:{
+                    min: 0,
+                    max: 100,
+                },
+                millisecondsToWaitAfterExitRave: {
+                    min: 0,
+                    max: 500,
+                },
+                millisecondsToWaitAfterClickExitButton: {
+                    min: 0,
+                    max: 200,
+                },
                 pixelsRadiusOfRandomMovementAroundBuyButton: 100
             },
             mouse: {
@@ -27,6 +39,14 @@ export class BotSettingsManager {
             },
             singleAssault: {
                 forceExitAfterMillis: 4000,
+                millisecondsToWaitAfterAssault: {
+                    min: 6000,
+                    max: 7000
+                },
+                millisecondsToWaitAfterExitRave: {
+                    min: 5000,
+                    max: 6000
+                },
                 hitman: {
                     minRespect: 200,
                     maxRespect: 100000
@@ -41,7 +61,10 @@ export class BotSettingsManager {
             },
             gangRobbery: {
                 makeRandomMovement: true,
-                millisecondsToWaitBeforeCheckButtonAcceptOrDoTheScore: 500
+                millisecondsToWaitBeforeCheckButtonAcceptOrDoTheScore: {
+                    min: 0,
+                    max: 500
+                }
             }
         }
     }
