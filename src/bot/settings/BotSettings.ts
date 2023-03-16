@@ -2,10 +2,10 @@ import { LogLevel } from "../../logger/Logger"
 
 export interface RechargeEnergySettings {
     ticketsStopLimit: number,
-    millisecondsToWaitAfterEnterRave: number,
-    millisecondsToWaitAfterEnterRaveIfVisitorInside: number,
-    millisecondsToWaitAfterExitRave: number,
-    millisecondsToWaitAfterClickExitButton: number,
+    millisecondsToWaitAfterEnterRave: any
+    millisecondsToWaitAfterEnterRaveIfVisitorInside: any,
+    millisecondsToWaitAfterExitRave: any,
+    millisecondsToWaitAfterClickExitButton: any,
     pixelsRadiusOfRandomMovementAroundBuyButton: number
 }
 
@@ -15,7 +15,10 @@ export interface SingleRobberySettings {
 
 export interface GangRobberySettings {
     makeRandomMovement: boolean,
-    millisecondsToWaitBeforeCheckButtonAcceptOrDoTheScore: number
+    millisecondsToWaitBeforeCheckButtonAcceptOrDoTheScore: {
+        min: number,
+        max: number
+    }
 }
 
 export interface Mouse {
@@ -43,8 +46,11 @@ export interface NotHitmanSettings {
 export interface SingleAssaultSettings {
     forceExitAfterMillis: number,
     hitman: HitmanSettings,
-    notHitman: NotHitmanSettings
+    notHitman: NotHitmanSettings,
+    millisecondsToWaitAfterAssault: any,
+    millisecondsToWaitAfterExitRave: any
 }
+
 
 export interface BotSettings {
     mouse: Mouse,

@@ -85,8 +85,11 @@ export class GangRobberyBotWorkflow implements IBotWorkflow {
                     }
                 }
 
-                await this.waitUtils.waitMilliSeconds(
-                    this.botSettingsManager.getBotSettings().gangRobbery.millisecondsToWaitBeforeCheckButtonAcceptOrDoTheScore
+                await this.waitUtils.waitRandomMillisecondsBetween(
+                    this.botSettingsManager.getBotSettings()
+                        .gangRobbery.millisecondsToWaitBeforeCheckButtonAcceptOrDoTheScore.min,
+                    this.botSettingsManager.getBotSettings()
+                        .gangRobbery.millisecondsToWaitBeforeCheckButtonAcceptOrDoTheScore.max,
                 );
                 
                 if(this.botSettingsManager.getBotSettings().gangRobbery.makeRandomMovement) {

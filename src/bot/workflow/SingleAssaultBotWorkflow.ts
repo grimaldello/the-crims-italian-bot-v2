@@ -96,7 +96,7 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
                 await this.botDomHelper.moveToElementByQueryAllIndexSelectorAndClick(DOMElementSelector.BUTTON_ENTER_RAVE, nextRaveIndex);
                 await this.waitUtils.waitForLastActionPerformed(BotEvents.ENTER_NIGHTCLUB_DONE);
 
-                // Force exit afte some amount of seconds
+                // Force exit after some amount of seconds
                 let forceExitAfterTime: boolean = false;
                 let forceExitAfterMillis: number = 
                     this.botSettingsManager.getBotSettings().singleAssault.forceExitAfterMillis;
@@ -124,7 +124,7 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
 
                     if(this.isVictimKillable(candidateVictim)) {
                             
-                        this.logger.info(`All victim criteria are matched for assult.`, LogColor.SUCCESS);
+                        this.logger.info(`All victim criteria are matched for assault.`, LogColor.SUCCESS);
                         this.logger.info(`ASSAULT!!`, LogColor.SUCCESS);
                         // Open Assault drop down menu
                         await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.ASSAULT_DROPDOWN_MENU);
@@ -145,7 +145,12 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
                             y: currentPosition.y -30
                         });
 
-                        await this.waitUtils.waitMilliSeconds(6000);
+                        await this.waitUtils.waitRandomMillisecondsBetween(
+                            this.botSettingsManager.getBotSettings()
+                                .singleAssault.millisecondsToWaitAfterAssault.min,
+                            this.botSettingsManager.getBotSettings()
+                                .singleAssault.millisecondsToWaitAfterAssault.max
+                        );
 
                     }
                     else{
@@ -164,7 +169,12 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
                     await this.waitUtils.waitMilliSeconds(200);
                 }
 
-                await this.waitUtils.waitMilliSeconds(5000);
+                await this.waitUtils.waitRandomMillisecondsBetween(
+                    this.botSettingsManager.getBotSettings()
+                        .singleAssault.millisecondsToWaitAfterExitRave.min,
+                    this.botSettingsManager.getBotSettings()
+                        .singleAssault.millisecondsToWaitAfterExitRave.max
+                );
                 await this.botDomHelper.moveFromCurrentCoordinateToRandomCoordinate();
 
             }
