@@ -14,6 +14,7 @@ import { MouseSimulator } from "../../mousesimulator/MouseSimulator";
 import { DOMCoordinate } from "../../commons/DOMCoordinate";
 import { BotSettingsManager } from "../settings/BotSettingsManager";
 import { LogColor, Logger } from "../../logger/Logger";
+import { RandomUtils } from "../../commons/RandomUtils";
 
 @singleton()
 export class SingleAssaultBotWorkflow implements IBotWorkflow {
@@ -23,6 +24,7 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
     private rechargeWorkflow: IBotWorkflow;
     private botEventsHandler: BotEventsHandler;
     private mouse: MouseSimulator;
+    private randomUtils: RandomUtils;
 
     private botDomHelper: BotDOMHelper;
     private waitUtils: WaitUtils;
@@ -41,6 +43,7 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
         this.mouse = container.resolve(MouseSimulator);
         this.botSettingsManager = container.resolve(BotSettingsManager);
         this.logger = container.resolve(Logger);
+        this.randomUtils = container.resolve(RandomUtils);
 
     }
 
@@ -89,7 +92,8 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
             if(this.user.stamina >= this.getSingleAssaultStaminaRequired()) {
 
                 this.logger.info(`Clicking on Enter button...`);
-                await this.botDomHelper.moveToElementByQueryAllIndexSelectorAndClick(DOMElementSelector.BUTTON_ENTER_RAVE, 1);
+                const nextRaveIndex = this.randomUtils.intBetween(1,8);
+                await this.botDomHelper.moveToElementByQueryAllIndexSelectorAndClick(DOMElementSelector.BUTTON_ENTER_RAVE, nextRaveIndex);
                 await this.waitUtils.waitForLastActionPerformed(BotEvents.ENTER_NIGHTCLUB_DONE);
 
                 // Force exit afte some amount of seconds
