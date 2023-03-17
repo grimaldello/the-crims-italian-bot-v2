@@ -16,12 +16,12 @@ So do not expect the perfection from this bot :)
 **You can obviously contribute on it in order to improve the bot.**
 
 # Before run the bot
-> :warning: Before run the bot make sure that the following points are have been done:
+> :warning: Before run the bot make sure that the following points have been done:
 > - **There must be a favorite rave** in order to permit the recharge to work (there's definitely room for improvement on this)
 > - **Single Robberies: checkbox Full Stamina must be checked**
 
 # How to use the **bot**
-You can fine here on Github a release ready to use.
+You can find here on Github a [Releases](https://github.com/grimaldello/the-crims-italian-bot-v2/releases) ready to use.
 
 In order to start the bot you need to:
 - copy all the content of the file `release.js` in the clipboard (I suggest CTRL+A to select all and then CTRL+C to copy the selected text)
