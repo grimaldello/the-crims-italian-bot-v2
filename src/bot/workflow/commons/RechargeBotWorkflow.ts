@@ -1,4 +1,5 @@
 import { container, singleton } from "tsyringe";
+import { RandomUtils } from "../../../commons/RandomUtils";
 import { WaitUtils } from "../../../commons/WaitUtils";
 import { LogColor, Logger } from "../../../logger/Logger";
 import { BotDOMHelper } from "../../BotDOMHelper";
@@ -20,6 +21,7 @@ export class RechargeBotWorkflow implements IBotWorkflow {
     private user: User;
     private logger: Logger;
     private botSettingsManager: BotSettingsManager;
+    private randomUtils: RandomUtils;
 
     constructor() {
         this.botDomHelper = container.resolve(BotDOMHelper);
@@ -29,6 +31,7 @@ export class RechargeBotWorkflow implements IBotWorkflow {
         this.user = container.resolve(User);
         this.logger = container.resolve(Logger);
         this.botSettingsManager = container.resolve(BotSettingsManager);
+        this.randomUtils = container.resolve(RandomUtils);
     }
     
     async execute(): Promise<void> {
@@ -49,12 +52,7 @@ export class RechargeBotWorkflow implements IBotWorkflow {
 
             await this.clickOnEnterRaveButton();
 
-            await this.waitUtils.waitRandomMillisecondsBetween(
-                this.botSettingsManager.getBotSettings()
-                    .rechargeEnergy.millisecondsToWaitAfterEnterRave.min,
-                this.botSettingsManager.getBotSettings()
-                    .rechargeEnergy.millisecondsToWaitAfterEnterRave.max
-            );
+            await this.waitAfterClickEnterRaveButton();
             
             if(!this.botEventsHandler.getFoundVisitor()) {
                 this.logger.info(`Clicking Buy button...`);
@@ -80,22 +78,7 @@ export class RechargeBotWorkflow implements IBotWorkflow {
                 );
             }
 
-            while(this.botEventsHandler.getCurrentEvent() !== BotEvents.EXIT_NIGHTCLUB_DONE) {
-                if(this.botDomHelper.getHTMLElementByQuerySelector(DOMElementSelector.BUTTON_EXIT_NIGHTCLUB)) {
-                    this.logger.info(`Clicking to Exit button...`);
-                    await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.BUTTON_EXIT_NIGHTCLUB);
-                }
-                else {
-                    this.botEventsHandler.setCurrentEvent(BotEvents.EXIT_NIGHTCLUB_DONE);
-                }
-
-                await this.waitUtils.waitRandomMillisecondsBetween(
-                    this.botSettingsManager.getBotSettings()
-                        .rechargeEnergy.millisecondsToWaitAfterClickExitButton.min,
-                    this.botSettingsManager.getBotSettings()
-                        .rechargeEnergy.millisecondsToWaitAfterClickExitButton.max
-                );
-            }
+            await this.clickOnExitRave();
         }
         // await this.waitUtils.waitForLastActionPerformed(BotEvents.EXIT_NIGHTCLUB_DONE);
         this.logger.info(`Recharge Done`);
@@ -108,9 +91,56 @@ export class RechargeBotWorkflow implements IBotWorkflow {
     }
 
 
+    private async clickOnExitRave() {
+        while (this.botEventsHandler.getCurrentEvent() !== BotEvents.EXIT_NIGHTCLUB_DONE) {
+            if (this.botDomHelper.getHTMLElementByQuerySelector(DOMElementSelector.BUTTON_EXIT_NIGHTCLUB)) {
+                this.logger.info(`Clicking to Exit button...`);
+                await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.BUTTON_EXIT_NIGHTCLUB);
+            }
+            else {
+                this.botEventsHandler.setCurrentEvent(BotEvents.EXIT_NIGHTCLUB_DONE);
+            }
+
+            await this.waitUtils.waitRandomMillisecondsBetween(
+                this.botSettingsManager.getBotSettings()
+                    .rechargeEnergy.millisecondsToWaitAfterClickExitButton.min,
+                this.botSettingsManager.getBotSettings()
+                    .rechargeEnergy.millisecondsToWaitAfterClickExitButton.max
+            );
+        }
+    }
+
+    private async waitAfterClickEnterRaveButton() {
+        await this.waitUtils.waitRandomMillisecondsBetween(
+            this.botSettingsManager.getBotSettings()
+                .rechargeEnergy.millisecondsToWaitAfterEnterRave.min,
+            this.botSettingsManager.getBotSettings()
+                .rechargeEnergy.millisecondsToWaitAfterEnterRave.max
+        );
+    }
+
     private async clickOnEnterRaveButton() {
         this.logger.info(`Clicking Enter button...`);
-        await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.BUTTON_ENTER_FAVORITE_RAVE);
+        const useRandomRaveForRecharge: boolean 
+            = this.botSettingsManager.getBotSettings().rechargeEnergy.useRandomRaveForRecharge;
+        
+        const enterFavoriteRaveButton: HTMLElement | null = 
+            this.botDomHelper.getHTMLElementByQuerySelector(DOMElementSelector.BUTTON_ENTER_FAVORITE_RAVE);
+
+        if(enterFavoriteRaveButton === null) {
+            this.logger.info(`Favorite rave not found. Fallback to random rave`);
+        }
+
+        if(useRandomRaveForRecharge || enterFavoriteRaveButton === null) {
+            this.logger.info(`Entering random rave`);
+            const nextRaveIndex: number = this.randomUtils.intBetween(1,8);
+            await this.botDomHelper.moveToElementByQueryAllIndexSelectorAndClick(DOMElementSelector.BUTTON_ENTER_RAVE, nextRaveIndex);
+
+        }
+        else {
+            this.logger.info(`Entering favorite rave`);
+            await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.BUTTON_ENTER_FAVORITE_RAVE);
+        }
         await this.waitUtils.waitForLastActionPerformed(BotEvents.ENTER_NIGHTCLUB_DONE);
     }
 

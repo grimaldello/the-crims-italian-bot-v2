@@ -9,6 +9,7 @@ export class BotSettingsManager {
     constructor() {
         this.botSetting = {
             rechargeEnergy: {
+                useRandomRaveForRecharge: true,
                 ticketsStopLimit: 1,
                 millisecondsToWaitAfterEnterRave: {
                     min: 0,
