@@ -6,7 +6,8 @@ export interface RechargeEnergySettings {
     millisecondsToWaitAfterEnterRaveIfVisitorInside: any,
     millisecondsToWaitAfterExitRave: any,
     millisecondsToWaitAfterClickExitButton: any,
-    pixelsRadiusOfRandomMovementAroundBuyButton: number
+    pixelsRadiusOfRandomMovementAroundBuyButton: number,
+    useRandomRaveForRecharge: boolean
 }
 
 export interface SingleRobberySettings {

@@ -17,7 +17,6 @@ So do not expect the perfection from this bot :)
 
 # Before run the bot
 > :warning: Before run the bot make sure that the following points have been done:
-> - **There must be a favorite rave** in order to permit the recharge to work (there's definitely room for improvement on this)
 > - **Single Robberies: checkbox Full Stamina must be checked**
 
 # How to use the **bot**
@@ -47,6 +46,24 @@ let BotSettingsManager = class BotSettingsManager
 and then change the values according your needs.
 
 I know that this is not user friendly and can be improved, but it works :)
+
+# Recharging
+By default the bot will use a random rave in order to recharge.
+You can set to use favorite rave by changing the following setting to `false`:
+```
+useRandomRaveForRecharge: false,
+```
+This way the bot will use the first favorite rave.
+There's a fallback for this: if no favorite rave is found, it will use a random one.
+
+# Detox
+By default the bot will perform detox if additiction reach 75.
+You can change this behavior by changing the following threshold setting:
+```
+detox: {
+    threshold: 75
+},
+```
 
 # Single Robbery
 For single robbery the first thing to do is to execute manually the robbery you want to perform.
