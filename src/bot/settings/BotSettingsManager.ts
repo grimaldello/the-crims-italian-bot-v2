@@ -58,7 +58,9 @@ export class BotSettingsManager {
                 notHitman: {
                     minRespect: 200,
                     maxRespect: 100000
-                }
+                },
+                victimUsernameToAvoidToKillList: [],
+                victimIdsToAvoidToKillList: []
             },
             singleRobbery: {
                 makeRandomMovement: true
