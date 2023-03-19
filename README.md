@@ -67,7 +67,6 @@ detox: {
     }
 }
 ```
-
 # Single Robbery
 For single robbery the first thing to do is to execute manually the robbery you want to perform.
 
@@ -75,15 +74,37 @@ For single robbery the first thing to do is to execute manually the robbery you 
 
 The bot automatically will perform the currently selected single robbery and when necessary it will recharge.
 
-
 # Gang Robbery
 For gang robbery you must be in a gang that is performing gang robbery (virtual or not).
 Then the bot will press `Accept` or `Do the score` button automatically and also will recharge when necessary.
 
 # Hunting
 Hunting is basic at the moment.
-You have to set the min and max respect for hitman and not hitman victim and the bot will start hunting and killing victims depending on the respect criteria.
-Also it will perform recharge when (or if) necessary.
+
+You have to set the min and max respect for hitman and not hitman victim in the following settings:
+```
+hitman: {
+    minRespect: 200,
+    maxRespect: 100000
+},
+notHitman: {
+    minRespect: 200,
+    maxRespect: 100000
+},
+```
+and the bot will start hunting and killing victims depending on the respect criteria.
+
+You can also set a list of victims username or victims id to avoid to kill and exit instantly from the rave.
+You can set usernames or ids list in the following settings:
+```
+victimUsernameToAvoidToKillList: ["USERNAME_1", "USERNAME_2", ... , "USERNAME_x"],
+victimIdsToAvoidToKillList: ["ID_1", "ID_2", ... , "ID_X"]
+```
+For example to avoid to kill victim (and exit from rave) if username of victim is`foo` or `bar` or user victim with id `1234566789` is in rave:
+```
+victimUsernameToAvoidToKillList: ["foo", "bar"],
+victimIdsToAvoidToKillList: ["123456789"]
+```
 
 # Local Development
 If you want to develop locally the bot, first of all you need to install:
