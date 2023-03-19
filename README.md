@@ -57,12 +57,15 @@ This way the bot will use the first favorite rave.
 There's a fallback for this: if no favorite rave is found, it will use a random one.
 
 # Detox
-By default the bot will perform detox if additiction reach 75.
-You can change this behavior by changing the following threshold setting:
+By default the bot will perform detox if current addiction is in a range of a min and max random value.
+You can change the threshold by changing the following setting:
 ```
 detox: {
-    threshold: 75
-},
+    threshold: {
+        min: 25,
+        max: 65
+    }
+}
 ```
 
 # Single Robbery
