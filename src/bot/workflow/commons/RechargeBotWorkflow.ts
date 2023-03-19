@@ -120,28 +120,41 @@ export class RechargeBotWorkflow implements IBotWorkflow {
     }
 
     private async clickOnEnterRaveButton() {
-        this.logger.info(`Clicking Enter button...`);
-        const useRandomRaveForRecharge: boolean 
-            = this.botSettingsManager.getBotSettings().rechargeEnergy.useRandomRaveForRecharge;
+        // Not the best solution, but it works
+        // This is a workaround for the the crims bug "unknown rave"
+        // happening after pressing the enter rave button
+        let clickEnterRaveCallback = async () =>{
+            this.logger.info(`Clicking Enter button...`);
+            const useRandomRaveForRecharge: boolean 
+                = this.botSettingsManager.getBotSettings().rechargeEnergy.useRandomRaveForRecharge;
+            
+            const enterFavoriteRaveButton: HTMLElement | null = 
+                this.botDomHelper.getHTMLElementByQuerySelector(DOMElementSelector.BUTTON_ENTER_FAVORITE_RAVE);
+    
+            if(enterFavoriteRaveButton === null) {
+                this.logger.info(`Favorite rave not found. Fallback to random rave`);
+            }
+    
+            if(useRandomRaveForRecharge || enterFavoriteRaveButton === null) {
+                this.logger.info(`Entering random rave`);
+                const nextRaveIndex: number = this.randomUtils.intBetween(1,8);
+                await this.botDomHelper.moveToElementByQueryAllIndexSelectorAndClick(DOMElementSelector.BUTTON_ENTER_RAVE, nextRaveIndex);
+    
+            }
+            else {
+                this.logger.info(`Entering favorite rave`);
+                await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.BUTTON_ENTER_FAVORITE_RAVE);
+            }
+        }
+        // To start immediately the check
+        clickEnterRaveCallback();
+        // Then check every 3 seconds if we are entered in rave or not
+        let intervalPid = setInterval(clickEnterRaveCallback, 3000);
         
-        const enterFavoriteRaveButton: HTMLElement | null = 
-            this.botDomHelper.getHTMLElementByQuerySelector(DOMElementSelector.BUTTON_ENTER_FAVORITE_RAVE);
-
-        if(enterFavoriteRaveButton === null) {
-            this.logger.info(`Favorite rave not found. Fallback to random rave`);
-        }
-
-        if(useRandomRaveForRecharge || enterFavoriteRaveButton === null) {
-            this.logger.info(`Entering random rave`);
-            const nextRaveIndex: number = this.randomUtils.intBetween(1,8);
-            await this.botDomHelper.moveToElementByQueryAllIndexSelectorAndClick(DOMElementSelector.BUTTON_ENTER_RAVE, nextRaveIndex);
-
-        }
-        else {
-            this.logger.info(`Entering favorite rave`);
-            await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.BUTTON_ENTER_FAVORITE_RAVE);
-        }
         await this.waitUtils.waitForLastActionPerformed(BotEvents.ENTER_NIGHTCLUB_DONE);
+        // If correctly entered in rave, clear set setInterval
+        clearInterval(intervalPid);
+        
     }
 
     private async clickOnNightlifePage() {

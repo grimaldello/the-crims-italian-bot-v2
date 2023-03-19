@@ -91,10 +91,7 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
         while(true) {
             if(this.user.stamina >= this.getSingleAssaultStaminaRequired()) {
 
-                this.logger.info(`Clicking on Enter button...`);
-                const nextRaveIndex: number = this.randomUtils.intBetween(1,8);
-                await this.botDomHelper.moveToElementByQueryAllIndexSelectorAndClick(DOMElementSelector.BUTTON_ENTER_RAVE, nextRaveIndex);
-                await this.waitUtils.waitForLastActionPerformed(BotEvents.ENTER_NIGHTCLUB_DONE);
+                await this.clickOnEnterRaveButton();
 
                 // Force exit after some amount of seconds
                 let forceExitAfterTime: boolean = false;
@@ -191,4 +188,24 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
         }
     }
     
+
+    private async clickOnEnterRaveButton() {
+        // Not the best solution, but it works
+        // This is a workaround for the the crims bug "unknown rave"
+        // happening after pressing the enter rave button
+        let clickEnterRaveCallback = async () =>{
+            this.logger.info(`Clicking on Enter button...`);
+            const nextRaveIndex: number = this.randomUtils.intBetween(1, 8);
+            await this.botDomHelper.moveToElementByQueryAllIndexSelectorAndClick(DOMElementSelector.BUTTON_ENTER_RAVE, nextRaveIndex);
+    
+        };
+        // Start immediately the check
+        clickEnterRaveCallback();
+        // Then check every 3 seconds if we are entered in rave or not
+        let intervalPid = setInterval(clickEnterRaveCallback, 3000);
+        
+        await this.waitUtils.waitForLastActionPerformed(BotEvents.ENTER_NIGHTCLUB_DONE);
+        // If correctly entered in rave, clear set setInterval
+        clearInterval(intervalPid);
+    }
 }
