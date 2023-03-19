@@ -57,7 +57,7 @@ This way the bot will use the first favorite rave.
 There's a fallback for this: if no favorite rave is found, it will use a random one.
 
 # Detox
-By default the bot will perform detox if current addiction is in a range of a min and max random value.
+By default the bot will perform detox if current addiction is a random value in a range of min and a max value.
 You can change the threshold by changing the following setting:
 ```
 detox: {
