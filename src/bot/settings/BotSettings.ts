@@ -49,7 +49,10 @@ export interface SingleAssaultSettings {
     hitman: HitmanSettings,
     notHitman: NotHitmanSettings,
     millisecondsToWaitAfterAssault: any,
-    millisecondsToWaitAfterExitRave: any
+    millisecondsToWaitAfterExitRave: any,
+    victimUsernameToAvoidToKillList: string[],
+    victimIdsToAvoidToKillList: string[]
+
 }
 
 

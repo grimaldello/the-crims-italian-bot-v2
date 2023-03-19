@@ -58,7 +58,35 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
         );
     }
 
-    private isVictimKillable(candidateVictim: Visitor): boolean {
+    private checkIfVictimInRaveIsToAvoidToKill(candidateVictim: Visitor): boolean {
+        let avoidToKill: boolean = false;
+
+        const usernameVictimToAvoidToKillList: string[] = 
+            this.botSettingsManager.getBotSettings()
+                .singleAssault.victimUsernameToAvoidToKillList.map((e) => e.toLowerCase());
+
+        const idsVictimToAvoidToKillList: string[] = 
+            this.botSettingsManager.getBotSettings()
+                .singleAssault.victimIdsToAvoidToKillList;
+        
+        this.logger.info(`Victim username: ${candidateVictim.username}`, LogColor.WARNING);
+        this.logger.info(`Checking if username victim is in [${usernameVictimToAvoidToKillList}]`, LogColor.WARNING);
+
+        if(usernameVictimToAvoidToKillList.includes(""+candidateVictim.username?.toLowerCase())) {
+            this.logger.info(`Victim username is in the avoid to kill list`, LogColor.WARNING);
+            avoidToKill = true;
+        }
+
+        this.logger.info(`Victim id: ${candidateVictim.id}`, LogColor.WARNING);
+        this.logger.info(`Checking if id victim is in [${idsVictimToAvoidToKillList}]`, LogColor.WARNING);
+        if(idsVictimToAvoidToKillList.includes(""+candidateVictim.id)) {
+            this.logger.info(`Id victim is in the avoid to kill list`, LogColor.WARNING);
+            avoidToKill = true;
+        }
+        return avoidToKill;
+    }
+
+    private checkIfVictimMatchKillCriteria(candidateVictim: Visitor): boolean {
 
         if(candidateVictim === null) {
             this.logger.error("Candidate Victim is null", LogColor.NONE);
@@ -89,112 +117,75 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
         return isVictimKillable;
     }
 
-    async execute(): Promise<void> {
-        await this.updateStatsWorkflow.execute();
+    private printCandidateVictimInfo(candidateVictim: Visitor) {
+        this.logger.info(`Candidate Victim`, LogColor.WARNING);
+        this.logger.info(`Name: ${candidateVictim.username}`, LogColor.WARNING);
+        this.logger.info(`Respect: ${candidateVictim.respect}`, LogColor.WARNING);
+        this.logger.info(`Level: ${candidateVictim.level_text_name}`, LogColor.WARNING);
+        this.logger.info(`Character: ${candidateVictim.character_text_name}`, LogColor.WARNING);
+    }
 
-        await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.MENU_NIGHTLIFE);
-        await this.waitUtils.waitForLastActionPerformed(BotEvents.NIGHTCLUBS_DONE);
+    private async waitForVictim() {
+        // Force exit after some amount of seconds
+        let forceExitAfterTime: boolean = false;
+        let forceExitAfterMillis: number = this.botSettingsManager.getBotSettings().singleAssault.forceExitAfterMillis;
 
-        while(true) {
-            if(this.user.stamina >= this.getSingleAssaultStaminaRequired()) {
+        setTimeout(() => {
+            this.logger.info("Force exit");
+            forceExitAfterTime = true;
+        }, forceExitAfterMillis);
 
-                await this.clickOnEnterRaveButton();
-
-                // Force exit after some amount of seconds
-                let forceExitAfterTime: boolean = false;
-                let forceExitAfterMillis: number = 
-                    this.botSettingsManager.getBotSettings().singleAssault.forceExitAfterMillis;
-
-                setTimeout(()=>{
-                    this.logger.info("Force exit");
-                    forceExitAfterTime = true;
-                }, forceExitAfterMillis);
-
-                this.logger.info(`Waiting for victims...`);
-                while(!this.botEventsHandler.getFoundVisitor() && 
-                        this.botEventsHandler.getCurrentEvent() !== BotEvents.EXIT_NIGHTCLUB_DONE &&
-                        !forceExitAfterTime) {
-                    await this.waitUtils.waitMilliSeconds(100);
-                }
-
-                if(this.botEventsHandler.getVisitorsList().length === 1) {
-                    const candidateVictim: Visitor = this.botEventsHandler.getVisitorsList()[0];
-
-                    this.logger.info(`Candidate Victim`, LogColor.WARNING);
-                    this.logger.info(`Name: ${candidateVictim.username}`, LogColor.WARNING);
-                    this.logger.info(`Respect: ${candidateVictim.respect}`, LogColor.WARNING);
-                    this.logger.info(`Level: ${candidateVictim.level_text_name}`, LogColor.WARNING);
-                    this.logger.info(`Character: ${candidateVictim.character_text_name}`, LogColor.WARNING);
-
-                    if(this.isVictimKillable(candidateVictim)) {
-                            
-                        this.logger.info(`All victim criteria are matched for assault.`, LogColor.SUCCESS);
-                        this.logger.info(`ASSAULT!!`, LogColor.SUCCESS);
-                        // Open Assault drop down menu
-                        await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.ASSAULT_DROPDOWN_MENU);
-                        await this.waitUtils.waitMilliSeconds(10);
-
-                        // Select Single Assault item
-                        let currentPosition: DOMCoordinate = this.mouse.getFakeCursorDOMCoordinate();
-                        await this.botDomHelper.moveFromCurrentCoordinateToAnotherCoordinateAndClick({
-                            x: currentPosition.x,
-                            y: currentPosition.y + 60
-                        });
-                        await this.waitUtils.waitMilliSeconds(10);
-
-                        // Click Assault button
-                        currentPosition = this.mouse.getFakeCursorDOMCoordinate();
-                        await this.botDomHelper.moveFromCurrentCoordinateToAnotherCoordinateAndClick({
-                            x: currentPosition.x,
-                            y: currentPosition.y -30
-                        });
-
-                        await this.waitUtils.waitRandomMillisecondsBetween(
-                            this.botSettingsManager.getBotSettings()
-                                .singleAssault.millisecondsToWaitAfterAssault.min,
-                            this.botSettingsManager.getBotSettings()
-                                .singleAssault.millisecondsToWaitAfterAssault.max
-                        );
-
-                    }
-                    else{
-                        this.logger.info(`Candidate victim TOO STRONG!`, LogColor.WARNING);
-                    }
-                }
-
-                this.logger.info(`Clicking on Exit button...`);
-                while(this.botEventsHandler.getCurrentEvent() !== BotEvents.EXIT_NIGHTCLUB_DONE) {
-                    if(this.botDomHelper.getHTMLElementByQuerySelector(DOMElementSelector.BUTTON_EXIT_NIGHTCLUB)) {
-                        await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.BUTTON_EXIT_NIGHTCLUB);
-                    }
-                    else {
-                        this.botEventsHandler.setCurrentEvent(BotEvents.EXIT_NIGHTCLUB_DONE);
-                    }
-                    await this.waitUtils.waitMilliSeconds(200);
-                }
-
-                await this.waitUtils.waitRandomMillisecondsBetween(
-                    this.botSettingsManager.getBotSettings()
-                        .singleAssault.millisecondsToWaitAfterExitRave.min,
-                    this.botSettingsManager.getBotSettings()
-                        .singleAssault.millisecondsToWaitAfterExitRave.max
-                );
-                await this.botDomHelper.moveFromCurrentCoordinateToRandomCoordinate();
-
-            }
-            else {
-                if(this.user.addiction >= this.getRandomDetox()) {
-                    await this.detoxWorkflow.execute();
-                }
-                await this.rechargeWorkflow.execute();
-                // await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.MENU_NIGHTLIFE);
-                // await this.waitUtils.waitForLastActionPerformed(BotEvents.NIGHTCLUBS_DONE);
-
-            }
-            
+        this.logger.info(`Waiting for victims...`);
+        while (!this.botEventsHandler.getFoundVisitor() &&
+            this.botEventsHandler.getCurrentEvent() !== BotEvents.EXIT_NIGHTCLUB_DONE &&
+            !forceExitAfterTime) {
+            await this.waitUtils.waitMilliSeconds(100);
         }
     }
-    
+
+    private async clickOnExitButton() {
+        this.logger.info(`Clicking on Exit button...`);
+        while (this.botEventsHandler.getCurrentEvent() !== BotEvents.EXIT_NIGHTCLUB_DONE) {
+            if (this.botDomHelper.getHTMLElementByQuerySelector(DOMElementSelector.BUTTON_EXIT_NIGHTCLUB)) {
+                await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.BUTTON_EXIT_NIGHTCLUB);
+            }
+            else {
+                this.botEventsHandler.setCurrentEvent(BotEvents.EXIT_NIGHTCLUB_DONE);
+            }
+            await this.waitUtils.waitMilliSeconds(200);
+        }
+    }
+
+    private async attack() {
+        this.logger.info(`All victim criteria are matched for assault.`, LogColor.SUCCESS);
+        this.logger.info(`ASSAULT!!`, LogColor.SUCCESS);
+
+        // Open Assault drop down menu
+        await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.ASSAULT_DROPDOWN_MENU);
+        await this.waitUtils.waitMilliSeconds(10);
+
+        // Select Single Assault item
+        let currentPosition: DOMCoordinate = this.mouse.getFakeCursorDOMCoordinate();
+        await this.botDomHelper.moveFromCurrentCoordinateToAnotherCoordinateAndClick({
+            x: currentPosition.x,
+            y: currentPosition.y + 60
+        });
+        await this.waitUtils.waitMilliSeconds(10);
+
+        // Click Assault button
+        currentPosition = this.mouse.getFakeCursorDOMCoordinate();
+        await this.botDomHelper.moveFromCurrentCoordinateToAnotherCoordinateAndClick({
+            x: currentPosition.x,
+            y: currentPosition.y - 30
+        });
+
+        await this.waitUtils.waitRandomMillisecondsBetween(
+            this.botSettingsManager.getBotSettings()
+                .singleAssault.millisecondsToWaitAfterAssault.min,
+            this.botSettingsManager.getBotSettings()
+                .singleAssault.millisecondsToWaitAfterAssault.max
+        );
+    }
 
     private async clickOnEnterRaveButton() {
         // Not the best solution, but it works
@@ -214,5 +205,57 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
         await this.waitUtils.waitForLastActionPerformed(BotEvents.ENTER_NIGHTCLUB_DONE);
         // If correctly entered in rave, clear set setInterval
         clearInterval(intervalPid);
+    }
+
+    private async waitAfterAssault() {
+        await this.waitUtils.waitRandomMillisecondsBetween(
+            this.botSettingsManager.getBotSettings()
+                .singleAssault.millisecondsToWaitAfterExitRave.min,
+            this.botSettingsManager.getBotSettings()
+                .singleAssault.millisecondsToWaitAfterExitRave.max
+        );
+    }
+
+    async execute(): Promise<void> {
+        await this.updateStatsWorkflow.execute();
+
+        await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.MENU_NIGHTLIFE);
+        await this.waitUtils.waitForLastActionPerformed(BotEvents.NIGHTCLUBS_DONE);
+
+        while(true) {
+            if(this.user.stamina >= this.getSingleAssaultStaminaRequired()) {
+
+                await this.clickOnEnterRaveButton();
+                await this.waitForVictim();
+
+                if(this.botEventsHandler.getVisitorsList().length === 1) {
+                    const candidateVictim: Visitor = this.botEventsHandler.getVisitorsList()[0];
+
+                    this.printCandidateVictimInfo(candidateVictim);
+
+                    if(this.checkIfVictimInRaveIsToAvoidToKill(candidateVictim)) {
+                        this.logger.info(`Found a victim to avoid!!!. Exiting...`);
+                    }
+                    else if(this.checkIfVictimMatchKillCriteria(candidateVictim)) {
+                        await this.attack();
+                    }
+                    else{
+                        this.logger.info(`Candidate victim TOO STRONG!`, LogColor.WARNING);
+                    }
+                }
+                await this.clickOnExitButton();
+                await this.waitAfterAssault();
+                await this.botDomHelper.moveFromCurrentCoordinateToRandomCoordinate();
+
+            }
+            else {
+                if(this.user.addiction >= this.getRandomDetox()) {
+                    await this.detoxWorkflow.execute();
+                }
+                await this.rechargeWorkflow.execute();
+
+            }
+            
+        }
     }
 }
