@@ -10,6 +10,7 @@ import { ForceUpdateStatsBotWorkflow } from "./commons/ForceUpdateStatsBotWorkfl
 import { IBotWorkflow } from "./commons/IBotWorkflow";
 import { BotSettingsManager } from "../settings/BotSettingsManager";
 import { LogColor, Logger } from "../../logger/Logger";
+import { RandomUtils } from "../../commons/RandomUtils";
 
 @singleton()
 export class SingleRobberyBotWorkflow implements IBotWorkflow {
@@ -22,8 +23,8 @@ export class SingleRobberyBotWorkflow implements IBotWorkflow {
     private waitUtils: WaitUtils;
     private user: User;
     private botSettingsManager: BotSettingsManager;
-
     private logger: Logger;
+    private randomUtils: RandomUtils;
 
     constructor() {
         this.updateStatsWorkflow = container.resolve(ForceUpdateStatsBotWorkflow);
@@ -34,6 +35,7 @@ export class SingleRobberyBotWorkflow implements IBotWorkflow {
         this.user = container.resolve(User);
         this.botSettingsManager = container.resolve(BotSettingsManager);
         this.logger = container.resolve(Logger);
+        this.randomUtils = container.resolve(RandomUtils);
     }
 
     private getSingleRobberyStaminaRequired(): number {
@@ -57,6 +59,13 @@ export class SingleRobberyBotWorkflow implements IBotWorkflow {
                 
     }
 
+    private getRandomDetox(): number {
+        return this.randomUtils.intBetween(
+            this.botSettingsManager.getBotSettings().detox.threshold.min,
+            this.botSettingsManager.getBotSettings().detox.threshold.max
+        );
+    }
+
     async execute(): Promise<void> {
 
         await this.updateStatsWorkflow.execute();
@@ -73,7 +82,7 @@ export class SingleRobberyBotWorkflow implements IBotWorkflow {
                 await this.waitUtils.waitForLastActionPerformed(BotEvents.ROB_DONE);
             }
             else {
-                if(this.user.addiction >= this.botSettingsManager.getBotSettings().detox.threshold) {
+                if(this.user.addiction >= this.getRandomDetox()) {
                     await this.detoxWorkflow.execute();
                 }
                 await this.rechargeWorkflow.execute();

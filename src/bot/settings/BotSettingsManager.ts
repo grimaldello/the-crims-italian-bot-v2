@@ -36,7 +36,10 @@ export class BotSettingsManager {
                 level: LogLevel.INFO
             },
             detox: {
-                threshold: 75
+                threshold: {
+                    min: 25,
+                    max: 65
+                }
             },
             singleAssault: {
                 forceExitAfterMillis: 4000,

@@ -10,6 +10,7 @@ import { RechargeBotWorkflow } from "./commons/RechargeBotWorkflow";
 import { ForceUpdateStatsBotWorkflow } from "./commons/ForceUpdateStatsBotWorkflow";
 import { BotSettingsManager } from "../settings/BotSettingsManager";
 import { LogColor, Logger } from "../../logger/Logger";
+import { RandomUtils } from "../../commons/RandomUtils";
 
 @singleton()
 export class GangRobberyBotWorkflow implements IBotWorkflow {
@@ -22,6 +23,7 @@ export class GangRobberyBotWorkflow implements IBotWorkflow {
     private waitUtils: WaitUtils;
     private user: User;
     private botSettingsManager: BotSettingsManager;
+    private randomUtils: RandomUtils;
 
     private logger: Logger;
 
@@ -34,6 +36,7 @@ export class GangRobberyBotWorkflow implements IBotWorkflow {
         this.user = container.resolve(User);
         this.botSettingsManager = container.resolve(BotSettingsManager);
         this.logger = container.resolve(Logger);
+        this.randomUtils = container.resolve(RandomUtils);
     }
 
     public getPlannedGangRobberyStaminaRequired(): number {
@@ -46,6 +49,13 @@ export class GangRobberyBotWorkflow implements IBotWorkflow {
         }
 
         return energyRequired;
+    }
+
+    private getRandomDetox(): number {
+        return this.randomUtils.intBetween(
+            this.botSettingsManager.getBotSettings().detox.threshold.min,
+            this.botSettingsManager.getBotSettings().detox.threshold.max
+        );
     }
 
     async execute(): Promise<void> {
@@ -98,7 +108,8 @@ export class GangRobberyBotWorkflow implements IBotWorkflow {
 
             }
             else {
-                if(this.user.addiction >= this.botSettingsManager.getBotSettings().detox.threshold) {
+
+                if(this.user.addiction >= this.getRandomDetox()) {
                     await this.detoxWorkflow.execute();
                 }
                 await this.rechargeWorkflow.execute();

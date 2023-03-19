@@ -51,6 +51,13 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
         return 50;
     }
 
+    private getRandomDetox(): number {
+        return this.randomUtils.intBetween(
+            this.botSettingsManager.getBotSettings().detox.threshold.min,
+            this.botSettingsManager.getBotSettings().detox.threshold.max
+        );
+    }
+
     private isVictimKillable(candidateVictim: Visitor): boolean {
 
         if(candidateVictim === null) {
@@ -176,7 +183,7 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
 
             }
             else {
-                if(this.user.addiction >= this.botSettingsManager.getBotSettings().detox.threshold) {
+                if(this.user.addiction >= this.getRandomDetox()) {
                     await this.detoxWorkflow.execute();
                 }
                 await this.rechargeWorkflow.execute();

@@ -31,7 +31,7 @@ export interface LoggerSettings {
 }
 
 export interface DetoxSettings {
-    threshold: number
+    threshold: any
 }
 
 export interface HitmanSettings {
