@@ -77,6 +77,13 @@ The bot automatically will perform the currently selected single robbery and whe
 # Gang Robbery
 For gang robbery you must be in a gang that is performing gang robbery (virtual or not).
 Then the bot will press `Accept` or `Do the score` button automatically and also will recharge when necessary.
+You can also disable the press of `Do the score` button automatically (for example when robbing in a not virtual gang) by changing the following setting:
+```
+gangRobbery: {
+    ...
+    clickOnDoTheScoreButton: false
+}
+```
 
 # Hunting
 Hunting is basic at the moment.
