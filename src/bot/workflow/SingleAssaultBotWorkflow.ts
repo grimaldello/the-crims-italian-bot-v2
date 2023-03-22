@@ -15,6 +15,7 @@ import { DOMCoordinate } from "../../commons/DOMCoordinate";
 import { BotSettingsManager } from "../settings/BotSettingsManager";
 import { LogColor, Logger } from "../../logger/Logger";
 import { RandomUtils } from "../../commons/RandomUtils";
+import { ProfessionLevelMapping, CharacterSingleAssaultCriteria } from "../settings/BotSettings";
 
 @singleton()
 export class SingleAssaultBotWorkflow implements IBotWorkflow {
@@ -93,28 +94,48 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
             return false;
         }
 
-        let minRespect: number = 
-            this.botSettingsManager.getBotSettings().singleAssault.notHitman.minRespect;
+        const candidateVictimLevelTextName: string = candidateVictim.level_text_name as string;
+        const candidateVictimLevelNumber: number = 
+            ProfessionLevelMapping.getLevelByLevelTextName(candidateVictimLevelTextName);
 
-        let maxRespect: number = 
-            this.botSettingsManager.getBotSettings().singleAssault.notHitman.maxRespect;
+        this.logger.info(`Victim level is: ${candidateVictimLevelTextName} (${candidateVictimLevelNumber})`, LogColor.WARNING);
+        
+        const singleAssaultCriteria: any = 
+            this.botSettingsManager.getBotSettings().singleAssault.criteriaAssault;
 
-        if(candidateVictim.character_text_name?.toUpperCase().includes(`HITMAN`)) {
-            this.logger.info(`Victim is a HITMAN`, LogColor.WARNING);
-            minRespect = this.botSettingsManager.getBotSettings().singleAssault.hitman.minRespect;
-            maxRespect = this.botSettingsManager.getBotSettings().singleAssault.hitman.maxRespect;
+        const candidateVictimProfession: string = candidateVictim.character_text_name as string;
+        const victimAssaultCriteria: CharacterSingleAssaultCriteria = 
+            singleAssaultCriteria[candidateVictimProfession] as CharacterSingleAssaultCriteria;
+        
+        this.logger.info(`Assault criteria configured for profession ${candidateVictimProfession} is:`, LogColor.WARNING);
+        this.logger.info(`Max level: : ${victimAssaultCriteria.maxLevel}`, LogColor.WARNING);
+        this.logger.info(`Min respect: : ${victimAssaultCriteria.minRespect}`, LogColor.WARNING);
+        this.logger.info(`Max respect: : ${victimAssaultCriteria.maxRespect}`, LogColor.WARNING);
+
+        const victimRespect: number = candidateVictim.respect as number;
+
+        let isMatchedRespectCriteria: boolean = false;
+        let isMatchedLevelCriteria: boolean = false;
+
+        if(victimRespect <= victimAssaultCriteria.maxRespect
+            && victimRespect >= victimAssaultCriteria.minRespect
+        ){
+            this.logger.info(`Matched respect criteria`, LogColor.SUCCESS);
+            isMatchedRespectCriteria = true;
         }
         else {
-            this.logger.info(`Victim is not a HITMAN`, LogColor.WARNING);
+            this.logger.info(`NOT Matched respect criteria`, LogColor.WARNING);
         }
 
-        let isVictimKillable: boolean = false;
-        if(candidateVictim.respect) {
-            isVictimKillable = candidateVictim.respect > minRespect && 
-            candidateVictim.respect <= maxRespect;
+        if(candidateVictimLevelNumber <= victimAssaultCriteria.maxLevel) {
+            this.logger.info(`Matched level criteria`, LogColor.SUCCESS );
+            isMatchedLevelCriteria = true;
+        }
+        else {
+            this.logger.info(`NOT Matched level criteria`, LogColor.WARNING);
         }
 
-        return isVictimKillable;
+        return isMatchedRespectCriteria && isMatchedLevelCriteria;
     }
 
     private printCandidateVictimInfo(candidateVictim: Visitor) {
@@ -240,7 +261,7 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
                         await this.attack();
                     }
                     else{
-                        this.logger.info(`Candidate victim TOO STRONG!`, LogColor.WARNING);
+                        this.logger.info(`Candidate victim NOT MATCH CRITERIA!`, LogColor.WARNING);
                     }
                 }
                 await this.clickOnExitButton();

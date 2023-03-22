@@ -42,6 +42,43 @@ export class BotSettingsManager {
                 }
             },
             singleAssault: {
+                criteriaAssault: {
+                    CHARACTER_BROKER: {
+                        maxLevel: 13,
+                        minRespect: 200,
+                        maxRespect: 100000000
+                    },
+                    CHARACTER_PIMP: {
+                        maxLevel: 13,
+                        minRespect: 200,
+                        maxRespect: 100000000
+                    },
+                    CHARACTER_DEALER: {
+                        maxLevel: 13,
+                        minRespect: 200,
+                        maxRespect: 100000000
+                    },
+                    CHARACTER_ROBBER: {
+                        maxLevel: 13,
+                        minRespect: 200,
+                        maxRespect: 100000000
+                    },
+                    CHARACTER_BIZ: {
+                        maxLevel: 13,
+                        minRespect: 200,
+                        maxRespect: 100000000
+                    },
+                    CHARACTER_HITMAN: {
+                        maxLevel: 13,
+                        minRespect: 200,
+                        maxRespect: 100000000
+                    },
+                    CHARACTER_GANGSTER: {
+                        maxLevel: 13,
+                        minRespect: 200,
+                        maxRespect: 100000000
+                    }
+                },
                 forceExitAfterMillis: 4000,
                 millisecondsToWaitAfterAssault: {
                     min: 6000,
