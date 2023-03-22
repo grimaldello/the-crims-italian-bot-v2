@@ -68,39 +68,12 @@ export class GangRobberyBotWorkflow implements IBotWorkflow {
         while(true) {
             this.logger.info(`Executing Gang Robbery`);
             if(this.user.stamina >= this.getPlannedGangRobberyStaminaRequired()) {
-                const acceptGangRobberyButton: HTMLElement | null = 
-                    this.botDomHelper.getHTMLElementByQuerySelector(DOMElementSelector.BUTTON_GANG_ROBBERY_ACCEPT);
+                
+                await this.tryClickOnAcceptButton();
         
-                if(acceptGangRobberyButton !== null) {
-                    const isVisibleAcceptGangRobberyButton: boolean = 
-                        !(acceptGangRobberyButton.style.display === "none");
-        
-                    if(isVisibleAcceptGangRobberyButton) {
-                        this.logger.info(`Clicking Accept button...`, LogColor.SUCCESS);
-                        await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.BUTTON_GANG_ROBBERY_ACCEPT);
-                    }
-                }
-        
-                const executeGangRobberyButton: HTMLElement | null = 
-                    this.botDomHelper.getHTMLElementByQuerySelector(DOMElementSelector.BUTTON_GANG_ROBBERY_EXECUTE);
+                await this.tryToClickOnDoTheScoreButton();
 
-                if(executeGangRobberyButton !== null) {
-
-                    const isVisibleExecuteGangRobberyButton: boolean = 
-                        !(executeGangRobberyButton.style.display === "none");
-        
-                    if(isVisibleExecuteGangRobberyButton) {
-                        this.logger.info(`Clicking Execute button...`, LogColor.SUCCESS);
-                        await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.BUTTON_GANG_ROBBERY_EXECUTE);
-                    }
-                }
-
-                await this.waitUtils.waitRandomMillisecondsBetween(
-                    this.botSettingsManager.getBotSettings()
-                        .gangRobbery.millisecondsToWaitBeforeCheckButtonAcceptOrDoTheScore.min,
-                    this.botSettingsManager.getBotSettings()
-                        .gangRobbery.millisecondsToWaitBeforeCheckButtonAcceptOrDoTheScore.max,
-                );
+                await this.waitForOtherToAccept();
                 
                 if(this.botSettingsManager.getBotSettings().gangRobbery.makeRandomMovement) {
                     await this.botDomHelper.moveFromCurrentCoordinateToRandomCoordinate();
@@ -115,6 +88,51 @@ export class GangRobberyBotWorkflow implements IBotWorkflow {
                 await this.rechargeWorkflow.execute();
                 await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.MENU_ROBBERY);
                 await this.waitUtils.waitForLastActionPerformed(BotEvents.ROBBERIES_DONE);
+            }
+        }
+    }
+
+    private async waitForOtherToAccept() {
+        await this.waitUtils.waitRandomMillisecondsBetween(
+            this.botSettingsManager.getBotSettings()
+                .gangRobbery.millisecondsToWaitBeforeCheckButtonAcceptOrDoTheScore.min,
+            this.botSettingsManager.getBotSettings()
+                .gangRobbery.millisecondsToWaitBeforeCheckButtonAcceptOrDoTheScore.max
+        );
+    }
+
+    private async tryToClickOnDoTheScoreButton() {
+        const isClickOnDoTheScoreEnabled: boolean = 
+            this.botSettingsManager.getBotSettings().gangRobbery.clickOnDoTheScoreButton;
+
+        if(isClickOnDoTheScoreEnabled) {
+            const executeGangRobberyButton: HTMLElement | null = this.botDomHelper.getHTMLElementByQuerySelector(DOMElementSelector.BUTTON_GANG_ROBBERY_EXECUTE);
+
+            if (executeGangRobberyButton !== null) {
+    
+                const isVisibleExecuteGangRobberyButton: boolean = !(executeGangRobberyButton.style.display === "none");
+    
+                if (isVisibleExecuteGangRobberyButton) {
+                    this.logger.info(`Clicking Execute button...`, LogColor.SUCCESS);
+                    await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.BUTTON_GANG_ROBBERY_EXECUTE);
+                }
+            }
+        }
+        else {
+            this.logger.info(`Click on "Do the Score!" button is not enabled`);
+        }
+
+    }
+
+    private async tryClickOnAcceptButton() {
+        const acceptGangRobberyButton: HTMLElement | null = this.botDomHelper.getHTMLElementByQuerySelector(DOMElementSelector.BUTTON_GANG_ROBBERY_ACCEPT);
+
+        if (acceptGangRobberyButton !== null) {
+            const isVisibleAcceptGangRobberyButton: boolean = !(acceptGangRobberyButton.style.display === "none");
+
+            if (isVisibleAcceptGangRobberyButton) {
+                this.logger.info(`Clicking Accept button...`, LogColor.SUCCESS);
+                await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.BUTTON_GANG_ROBBERY_ACCEPT);
             }
         }
     }

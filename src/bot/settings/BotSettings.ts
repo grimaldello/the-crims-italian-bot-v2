@@ -2,10 +2,22 @@ import { LogLevel } from "../../logger/Logger"
 
 export interface RechargeEnergySettings {
     ticketsStopLimit: number,
-    millisecondsToWaitAfterEnterRave: any
-    millisecondsToWaitAfterEnterRaveIfVisitorInside: any,
-    millisecondsToWaitAfterExitRave: any,
-    millisecondsToWaitAfterClickExitButton: any,
+    millisecondsToWaitAfterEnterRave: {
+        min: number,
+        max: number
+    }
+    millisecondsToWaitAfterEnterRaveIfVisitorInside: {
+        min: number,
+        max: number
+    },
+    millisecondsToWaitAfterExitRave: {
+        min: number,
+        max: number
+    },
+    millisecondsToWaitAfterClickExitButton: {
+        min: number,
+        max: number
+    },
     pixelsRadiusOfRandomMovementAroundBuyButton: number,
     useRandomRaveForRecharge: boolean
 }
@@ -19,7 +31,8 @@ export interface GangRobberySettings {
     millisecondsToWaitBeforeCheckButtonAcceptOrDoTheScore: {
         min: number,
         max: number
-    }
+    },
+    clickOnDoTheScoreButton: boolean
 }
 
 export interface Mouse {
@@ -48,8 +61,14 @@ export interface SingleAssaultSettings {
     forceExitAfterMillis: number,
     hitman: HitmanSettings,
     notHitman: NotHitmanSettings,
-    millisecondsToWaitAfterAssault: any,
-    millisecondsToWaitAfterExitRave: any,
+    millisecondsToWaitAfterAssault: {
+        min: number,
+        max: number
+    },
+    millisecondsToWaitAfterExitRave: {
+        min: number,
+        max: number
+    },
     victimUsernameToAvoidToKillList: string[],
     victimIdsToAvoidToKillList: string[]
 

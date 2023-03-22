@@ -70,7 +70,8 @@ export class BotSettingsManager {
                 millisecondsToWaitBeforeCheckButtonAcceptOrDoTheScore: {
                     min: 0,
                     max: 500
-                }
+                },
+                clickOnDoTheScoreButton: false
             }
         }
     }
