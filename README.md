@@ -86,20 +86,72 @@ gangRobbery: {
 ```
 
 # Hunting
-Hunting is basic at the moment.
+You have to set the max level, min and max respect for each profession in the following settings:
+```
+singleAssault: {
+    criteriaAssault: {
+        CHARACTER_BROKER: {
+            maxLevel: BROKER_MAX_LEVEL,
+            minRespect: BROKER_MIN_RESPECT,
+            maxRespect: BROKER_MAX_RESPECT
+        },
+        CHARACTER_PIMP: {
+            maxLevel: PIMP_MAX_LEVEL,
+            minRespect: PIMP_MIN_RESPECT,
+            maxRespect: PIMP_MAX_RESPECT
+        },
+        CHARACTER_DEALER: {
+            maxLevel: DEALER_MAX_LEVEL,
+            minRespect: DEALER_MIN_RESPECT,
+            maxRespect: DEALER_MAX_RESPECT
+        },
+        CHARACTER_ROBBER: {
+            maxLevel: ROBBER_MAX_LEVEL,
+            minRespect: ROBBER_MIN_RESPECT,
+            maxRespect: ROBBER_MAX_RESPECT
+        },
+        CHARACTER_BIZ: {
+            maxLevel: BUSINESSMAN_MAX_LEVEL,
+            minRespect: BUSINESSMAN_MIN_RESPECT,
+            maxRespect: BUSINESSMAN_MAX_RESPECT
+        },
+        CHARACTER_HITMAN: {
+            maxLevel: HTIMAN_MAX_LEVEL,
+            minRespect: HITMAN_MIN_RESPECT,
+            maxRespect: HITMAN_MAX_RESPECT
+        },
+        CHARACTER_GANGSTER: {
+            maxLevel: GANGSTER_MAX_LEVEL,
+            minRespect: GANGSTER_MIN_RESPECT,
+            maxRespect: GANGSTER_MAX_RESPECT
+        }
+    },
+```
+> :warning: **A default configuration is already present in the bot**, but you need to review it in order to understand if it fits your need and change it accordingly.
 
-You have to set the min and max respect for hitman and not hitman victim in the following settings:
+> :warning: **All settings for all profession must be configured** 
+> If you want skip/disable some profession to match criteria, I suggest to set `maxLevel` to 0 for that profession, in order to never be matched.
+
+The `maxLevel` property, indicates the max level, for a specific profession, the bot should consider in order to match level criteria. The criteria is matched if the victim level is less or equals than `maxLevel`. For example if victim level is 8 and `maxLevel` is set to 10 the criteria will be matched. If the victim level is 10 and `maxLevel` is set to 8, the level criteria is NOT matched.
+
+The `minRespect` and `maxRespect` properties, indicate the min and max respect, for a specific profession, the bot should consider in order to match the respect criteria. The criteria is matched if victim respect is less or equals than `maxRespect` and greater or equals than `minRespect`.
+
+**If both level criteria and respect criteria are matched,the victim will be assaulted** (otherwise exit from rave)
+
+Example of configuration for Robber profession:
 ```
-hitman: {
-    minRespect: 200,
-    maxRespect: 100000
-},
-notHitman: {
-    minRespect: 200,
-    maxRespect: 100000
+CHARACTER_ROBBER: {
+    maxLevel: 10,
+    minRespect: 50000,
+    maxRespect: 50000000
 },
 ```
-and the bot will start hunting and killing victims depending on the respect criteria.
+The above configuration is valid for Robber victim that:
+- has a level <= 10
+- respect is >= 50000
+- respect is <= 50000000
+
+**Avoid to kill some users**
 
 You can also set a list of victims username or victims id to avoid to kill and exit instantly from the rave.
 You can set usernames or ids list in the following settings:
@@ -119,7 +171,7 @@ If you want to develop locally the bot, first of all you need to install:
 
 > It may be working also with other NodeJs version, but never tested
 
-> If you already have a different version of Nodej installed, you can use [nvm](https://github.com/nvm-sh/nvm) for POSIX-compliant shell or [nvm-windows](https://github.com/coreybutler/nvm-windows) for Windows in order to install and manage multiple NodeJs and npm version on the same system.
+> If you already have a different version of NodeJs installed, you can use [nvm](https://github.com/nvm-sh/nvm) for POSIX-compliant shell or [nvm-windows](https://github.com/coreybutler/nvm-windows) for Windows in order to install and manage multiple NodeJs and npm version on the same system.
 
 Then clone the repository and install all the dependencies using the command (from the project root, the folder with `pacakge.json` file):
 ```
