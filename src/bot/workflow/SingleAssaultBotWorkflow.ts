@@ -188,24 +188,17 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
         // Select Single Assault item
         let currentPosition: DOMCoordinate = this.mouse.getFakeCursorDOMCoordinate();
         await this.botDomHelper.moveFromCurrentCoordinateToAnotherCoordinateAndClick({
-            x: currentPosition.x,
-            y: currentPosition.y + 60
+            x: currentPosition.x + this.randomUtils.intBetween(-5, 5),
+            y: currentPosition.y + this.randomUtils.intBetween(55, 65)
         });
-        currentPosition = this.mouse.getFakeCursorDOMCoordinate();
-        const singleAssaultHTMLElement: HTMLElement | null = 
-            document.elementFromPoint(currentPosition.x, currentPosition.y) as HTMLElement;
-        await this.botDomHelper.moveFromCurrentCoordinateToRandomCoordinateInsideHTMLElementAndClick(singleAssaultHTMLElement);
         await this.waitUtils.waitMilliSeconds(10);
 
         // Click Assault button
         currentPosition = this.mouse.getFakeCursorDOMCoordinate();
         await this.botDomHelper.moveFromCurrentCoordinateToAnotherCoordinateAndClick({
-            x: currentPosition.x,
-            y: currentPosition.y - 30
+            x: currentPosition.x + this.randomUtils.intBetween(-5, 5),
+            y: currentPosition.y + this.randomUtils.intBetween(-30, -25)
         });
-        const assaultButtonHTMLElement: HTMLElement | null = 
-        document.elementFromPoint(currentPosition.x, currentPosition.y) as HTMLElement;
-        await this.botDomHelper.moveFromCurrentCoordinateToRandomCoordinateInsideHTMLElementAndClick(assaultButtonHTMLElement);
 
         await this.waitUtils.waitRandomMillisecondsBetween(
             this.botSettingsManager.getBotSettings()
