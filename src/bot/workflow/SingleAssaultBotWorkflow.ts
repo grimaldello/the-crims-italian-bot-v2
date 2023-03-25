@@ -191,6 +191,10 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
             x: currentPosition.x,
             y: currentPosition.y + 60
         });
+        currentPosition = this.mouse.getFakeCursorDOMCoordinate();
+        const singleAssaultHTMLElement: HTMLElement | null = 
+            document.elementFromPoint(currentPosition.x, currentPosition.y) as HTMLElement;
+        this.botDomHelper.moveFromCurrentCoordinateToRandomCoordinateInsideHTMLElementAndClick(singleAssaultHTMLElement);
         await this.waitUtils.waitMilliSeconds(10);
 
         // Click Assault button
@@ -199,6 +203,9 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
             x: currentPosition.x,
             y: currentPosition.y - 30
         });
+        const assaultButtonHTMLElement: HTMLElement | null = 
+        document.elementFromPoint(currentPosition.x, currentPosition.y) as HTMLElement;
+        this.botDomHelper.moveFromCurrentCoordinateToRandomCoordinateInsideHTMLElementAndClick(assaultButtonHTMLElement);
 
         await this.waitUtils.waitRandomMillisecondsBetween(
             this.botSettingsManager.getBotSettings()

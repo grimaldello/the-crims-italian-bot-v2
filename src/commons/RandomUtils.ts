@@ -1,4 +1,5 @@
 import { singleton } from "tsyringe";
+import { DOMCoordinate } from "./DOMCoordinate";
 
 @singleton()
 export class RandomUtils {
@@ -16,5 +17,5 @@ export class RandomUtils {
     public randomTrueOrFalse(): boolean {
         const decision: number = this.intBetween(0,1);
         return decision === 0 ? false : true;
-    }
+    }   
 }

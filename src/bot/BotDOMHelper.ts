@@ -97,6 +97,30 @@ export class BotDOMHelper {
         await this.moveFromCurrentCoordinateToAnotherCoordinate(endingPoint);
     }
 
+    public async moveFromCurrentCoordinateToRandomCoordinateInsideHTMLElementAndClick(htmlElement: HTMLElement) {
+        const htmlElementDOMRect: DOMRect = htmlElement.getBoundingClientRect();
+
+        const htmlElementTop: number = htmlElementDOMRect.top + 5;
+        const htmlElementRight: number = htmlElementDOMRect.right - 5;
+        const htmlElementBottom: number = htmlElementDOMRect.bottom - 5;
+        const htmlElementLeft: number = htmlElementDOMRect.left + 5;
+
+        const htmlElementRandomPointX: number = 
+            this.randomUtils.intBetween(htmlElementLeft, htmlElementRight);
+
+        const htmlElementRandomPointY: number = 
+            this.randomUtils.intBetween(htmlElementTop, htmlElementBottom);
+
+        // Return the point of HTMLElement with the respective offset
+        const endingPoint: DOMCoordinate = {
+            x: htmlElementRandomPointX,
+            y: htmlElementRandomPointY,
+        };
+
+        this.logger.info(`Moving to random point...`);
+        await this.moveFromCurrentCoordinateToAnotherCoordinateAndClick(endingPoint);
+    }
+
 
     public async moveFromStartCoordinateToEndCoordinate(
         startCoordinate: DOMCoordinate,
