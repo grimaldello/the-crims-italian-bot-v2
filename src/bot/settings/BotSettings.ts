@@ -47,25 +47,17 @@ export interface DetoxSettings {
     threshold: any
 }
 
-export interface HitmanSettings {
-    minRespect: number,
-    maxRespect: number
-}
-
-export interface NotHitmanSettings {
-    minRespect: number,
-    maxRespect: number
-}
-
 export interface SingleAssaultSettings {
     forceExitAfterMillis: number,
-    hitman: HitmanSettings,
-    notHitman: NotHitmanSettings,
     millisecondsToWaitAfterAssault: {
         min: number,
         max: number
     },
     millisecondsToWaitAfterExitRave: {
+        min: number,
+        max: number
+    },
+    millisecondsToWaitAfterExitRaveIfPerformedAssault: {
         min: number,
         max: number
     },

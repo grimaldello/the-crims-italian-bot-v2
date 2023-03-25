@@ -18,7 +18,7 @@ export class Bot {
     private proxy: XMLHttpRequestProxy;
     private workflowToExecute: IBotWorkflow;
 
-    private whatYouWantoToDo(): string | null {
+    private whatYouWantToDo(): string | null {
         const message = `
         What do you want to do?
         
@@ -35,7 +35,7 @@ export class Bot {
 
     constructor() {
 
-        const userInput = this.whatYouWantoToDo();
+        const userInput = this.whatYouWantToDo();
         switch (userInput) {
             case "1":
                 this.workflowToExecute = container.resolve(SingleRobberyBotWorkflow);
