@@ -104,7 +104,7 @@ export class BotSettingsManager {
                     min: 0,
                     max: 500
                 },
-                clickOnDoTheScoreButton: false
+                clickOnDoTheScoreButton: true
             }
         }
     }
