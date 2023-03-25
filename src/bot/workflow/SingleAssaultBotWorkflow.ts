@@ -237,11 +237,22 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
         );
     }
 
+    private async waitAfterPerformedAssault() {
+        await this.waitUtils.waitRandomMillisecondsBetween(
+            this.botSettingsManager.getBotSettings()
+                .singleAssault.millisecondsToWaitAfterExitRaveIfPerformedAssault.min,
+            this.botSettingsManager.getBotSettings()
+                .singleAssault.millisecondsToWaitAfterExitRaveIfPerformedAssault.max
+        );
+    }
+
     async execute(): Promise<void> {
         await this.updateStatsWorkflow.execute();
 
         await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.MENU_NIGHTLIFE);
         await this.waitUtils.waitForLastActionPerformed(BotEvents.NIGHTCLUBS_DONE);
+
+        let performedAssault: boolean = false;
 
         while(true) {
             if(this.user.stamina >= this.getSingleAssaultStaminaRequired()) {
@@ -258,6 +269,7 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
                         this.logger.info(`Found a victim to avoid!!!. Exiting...`);
                     }
                     else if(this.checkIfVictimMatchKillCriteria(candidateVictim)) {
+                        performedAssault = true;
                         await this.attack();
                     }
                     else{
@@ -265,7 +277,7 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
                     }
                 }
                 await this.clickOnExitButton();
-                await this.waitAfterAssault();
+                await this.waitDependingIfAssaultHasBeenPerformed(performedAssault);
                 await this.botDomHelper.moveFromCurrentCoordinateToRandomCoordinate();
 
             }
@@ -276,7 +288,17 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
                 await this.rechargeWorkflow.execute();
 
             }
-            
+        }
+    }
+
+    private async waitDependingIfAssaultHasBeenPerformed(performedAssault: boolean) {
+        if (performedAssault) {
+            this.logger.info(`Waiting after assault`);
+            await this.waitAfterPerformedAssault();
+        }
+        else {
+            this.logger.info(`Waiting after NO assault`);
+            await this.waitAfterAssault();
         }
     }
 }

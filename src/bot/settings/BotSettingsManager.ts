@@ -88,13 +88,9 @@ export class BotSettingsManager {
                     min: 5000,
                     max: 6000
                 },
-                hitman: {
-                    minRespect: 200,
-                    maxRespect: 100000
-                },
-                notHitman: {
-                    minRespect: 200,
-                    maxRespect: 100000
+                millisecondsToWaitAfterExitRaveIfPerformedAssault: {
+                    min: 5000,
+                    max: 6000
                 },
                 victimUsernameToAvoidToKillList: [],
                 victimIdsToAvoidToKillList: []
