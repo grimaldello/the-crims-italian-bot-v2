@@ -61,6 +61,10 @@ export interface SingleAssaultSettings {
         min: number,
         max: number
     },
+    millisecondsToWaitAfterEnterRaveIfVisitorInside: {
+        min: number,
+        max: number
+    },
     victimUsernameToAvoidToKillList: string[],
     victimIdsToAvoidToKillList: string[],
     criteriaAssault: SingleAssaultCriteriaDefinition
