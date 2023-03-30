@@ -30,7 +30,7 @@ export class BotSettingsManager {
                 pixelsRadiusOfRandomMovementAroundBuyButton: 100
             },
             mouse: {
-                numberOfCoordinatesToSkip: 8
+                numberOfCoordinatesToSkip: 4
             },
             logger: {
                 level: LogLevel.INFO

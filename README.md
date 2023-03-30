@@ -47,6 +47,22 @@ and then change the values according your needs.
 
 I know that this is not user friendly and can be improved, but it works :)
 
+# Bot speed
+The bot has a parameter that can be configured in order to set the speed of the fake cursor.
+To change the bot speed, the following property can be updated:
+```
+mouse: {
+    numberOfCoordinatesToSkip: 4
+},
+```
+The higher the value, the faster will be the bot (but a lower number of logs the anti-cheating system creates).
+The lower the value, the lower will be the bot, (but a higher number of logs the anti-cheating system creates).
+
+The default value is 4. 
+From my tests this is a value with good balance on speed/logs creation.
+
+Moreover from my tests, the bot speed is CPU dependant: a more powerful CPU will perform better even with lower value of this setting.
+
 # Recharging
 By default the bot will use a random rave in order to recharge.
 You can set to use favorite rave by changing the following setting to `false`:

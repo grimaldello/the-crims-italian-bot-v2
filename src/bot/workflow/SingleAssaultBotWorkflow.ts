@@ -181,6 +181,7 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
         this.logger.info(`All victim criteria are matched for assault.`, LogColor.SUCCESS);
         this.logger.info(`ASSAULT!!`, LogColor.SUCCESS);
 
+        const start: number = Date.now();
         // Open Assault drop down menu
         await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.ASSAULT_DROPDOWN_MENU);
         await this.waitUtils.waitMilliSeconds(10);
@@ -199,6 +200,10 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
             x: currentPosition.x + this.randomUtils.intBetween(-5, 5),
             y: currentPosition.y + this.randomUtils.intBetween(-30, -25)
         });
+
+        const finish: number = Date.now();
+
+        this.logger.info(`Assault took: ${(finish - start)/1000} seconds`);
 
         await this.waitUtils.waitRandomMillisecondsBetween(
             this.botSettingsManager.getBotSettings()
