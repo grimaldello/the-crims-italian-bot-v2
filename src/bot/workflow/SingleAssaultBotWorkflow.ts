@@ -265,7 +265,17 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
                 await this.clickOnEnterRaveButton();
                 await this.waitForVictim();
 
+                if(this.botEventsHandler.getVisitorsList().length !== 0) {
+                    await this.waitUtils.waitRandomMillisecondsBetween(
+                        this.botSettingsManager.getBotSettings()
+                            .singleAssault.millisecondsToWaitAfterEnterRaveIfVisitorInside.min,
+                        this.botSettingsManager.getBotSettings()
+                            .singleAssault.millisecondsToWaitAfterEnterRaveIfVisitorInside.max
+                    );
+                }
+
                 if(this.botEventsHandler.getVisitorsList().length === 1) {
+
                     const candidateVictim: Visitor = this.botEventsHandler.getVisitorsList()[0];
 
                     this.printCandidateVictimInfo(candidateVictim);

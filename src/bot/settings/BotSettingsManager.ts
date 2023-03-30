@@ -80,6 +80,10 @@ export class BotSettingsManager {
                     }
                 },
                 forceExitAfterMillis: 4000,
+                millisecondsToWaitAfterEnterRaveIfVisitorInside: {
+                    min: 0,
+                    max: 100,
+                },
                 millisecondsToWaitAfterAssault: {
                     min: 6000,
                     max: 7000
