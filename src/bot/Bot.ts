@@ -10,6 +10,7 @@ import { RechargeBotWorkflow } from "./workflow/commons/RechargeBotWorkflow";
 import { DoNothingBotWorkflow } from "./workflow/DoNothingBotWorkflow";
 import { SingleAssaultBotWorkflow } from "./workflow/SingleAssaultBotWorkflow";
 import { TestBotWorkflow } from "./workflow/TestBotWorkflow";
+import { BotSettingsManager } from "./settings/BotSettingsManager";
 
 
 @singleton()
@@ -17,6 +18,7 @@ export class Bot {
 
     private proxy: XMLHttpRequestProxy;
     private workflowToExecute: IBotWorkflow;
+    private botSettingsManager: BotSettingsManager;
 
     private whatYouWantToDo(): string | null {
         const message = `
@@ -34,6 +36,15 @@ export class Bot {
     }
 
     constructor() {
+        this.botSettingsManager = container.resolve(BotSettingsManager);
+
+        this.proxy = new XMLHttpRequestProxy(
+            new CustomInterceptorOpen(),
+            new CustomInterceptorSend()
+        );
+        this.proxy.initialize();
+
+        this.removeDOMElementsByQuerySelector();
 
         const userInput = this.whatYouWantToDo();
         switch (userInput) {
@@ -59,13 +70,17 @@ export class Bot {
                 this.workflowToExecute = container.resolve(DoNothingBotWorkflow);
                 break;
         }
+    }
 
-        this.proxy = new XMLHttpRequestProxy(
-            new CustomInterceptorOpen(), 
-            new CustomInterceptorSend()
-        );
-
-        this.proxy.initialize();
+    private removeDOMElementsByQuerySelector(): void {
+        if(this.botSettingsManager.getBotSettings().general.removeImages) {
+            [
+                'img[src*="https://static-live.thecrims.com/static/images/avatars/"]',
+                'img[src*="https://static-live.thecrims.com/static/images/tc-menu-logo.png"',
+            ].forEach(selector => {
+                (document.querySelector(selector) as HTMLElement).style.display = "none";
+            });
+        }
     }
 
     public async start() {
