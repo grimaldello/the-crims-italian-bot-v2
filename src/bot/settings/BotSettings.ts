@@ -35,7 +35,7 @@ export interface GangRobberySettings {
     clickOnDoTheScoreButton: boolean
 }
 
-export interface Mouse {
+export interface MouseSettings {
     numberOfCoordinatesToSkip: number
 }
 
@@ -88,8 +88,13 @@ export interface SingleAssaultCriteriaDefinition {
     CHARACTER_GANGSTER: CharacterSingleAssaultCriteria
 }
 
+export interface GeneralSettings {
+    removeImages: boolean
+}
+
 export interface BotSettings {
-    mouse: Mouse,
+    general: GeneralSettings,
+    mouse: MouseSettings,
     logger: LoggerSettings,
     detox: DetoxSettings,
     singleAssault: SingleAssaultSettings,

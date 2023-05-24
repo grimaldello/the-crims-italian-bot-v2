@@ -4,10 +4,13 @@ import { BotSettings } from "./BotSettings";
 
 @singleton()
 export class BotSettingsManager {
-    private botSetting: BotSettings;
+    private botSettings: BotSettings;
 
     constructor() {
-        this.botSetting = {
+        this.botSettings = {
+            general: {
+                removeImages: true,
+            },
             rechargeEnergy: {
                 useRandomRaveForRecharge: true,
                 ticketsStopLimit: 1,
@@ -114,6 +117,6 @@ export class BotSettingsManager {
     }
 
     public getBotSettings(): BotSettings {
-        return this.botSetting;
+        return this.botSettings;
     }
 }
