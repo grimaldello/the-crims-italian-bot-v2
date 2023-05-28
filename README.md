@@ -72,9 +72,9 @@ Once it has been started, the bot has a functionality to pause and resume its ex
 
 >In order to be able to use this functionality, you must have the focus on the browser. 
 >To get browser focus, you can: 
-    - click on the title bar of the browser (or in most of other parts of the UI of the browser)
-    - click on the website page
-    - other way that at the moment don't come in my mind :)
+>    - click on the title bar of the browser (or in most of other parts of the UI of the browser)
+>    - click on the website page
+>    - other way that at the moment don't come in my mind :)
 
 By default, the pause and the resume functionality can be triggered with the keyboard keys combination `ctrl+alt+s`.
 
