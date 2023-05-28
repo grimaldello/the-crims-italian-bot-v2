@@ -47,6 +47,70 @@ and then change the values according your needs.
 
 I know that this is not user friendly and can be improved, but it works :)
 
+# Remove DOM elements
+The bot has a feature that permits to remove DOM elements from the page so they will not be displayed.
+
+The DOM elements that have to be removed must be defined in the following property, using its query selector:
+
+```
+querySelectorsDOMElementsToRemove: [
+],
+```
+
+By default the following DOM elements are removed:
+
+```
+querySelectorsDOMElementsToRemove: [
+    'img[src*="https://static-live.thecrims.com/static/images/avatars/"]',
+    'img[src*="https://static-live.thecrims.com/static/images/tc-menu-logo.png"',
+],
+```
+
+
+# Pause and resume bot
+Once it has been started, the bot has a functionality to pause and resume its execution, 
+
+>In order to be able to use this functionality, you must have the focus on the browser. 
+>To get browser focus, you can: 
+    - click on the title bar of the browser (or in most of other parts of the UI of the browser)
+    - click on the website page
+    - other way that at the moment don't come in my mind :)
+
+By default, the pause and the resume functionality can be triggered with the keyboard keys combination `ctrl+alt+s`.
+
+If the combination is pressed while the bot is running, then the bot will pause.
+
+If the combination is pressed while the bot is paused, then the bot will continue from where it paused. 
+
+The keyboard keys combination shortcut to pause and resume the bot execution, can be customized, by changing the following properties:
+```
+pauseResume: {
+    ctrlOrMetaKeyNecessary: true,
+    altKeyNecessary: true,
+    keyboardKeyForPauseResumeBot: "s"
+}
+```
+
+For example, if you want to pause and resume the bot execution with the shortcut `alt+p`, you have to set the property like the following configuration:
+```
+pauseResume: {
+    ctrlOrMetaKeyNecessary: false,
+    altKeyNecessary: true,
+    keyboardKeyForPauseResumeBot: "p"
+}
+```
+
+If you want to pause and resume the bot execution by only pressing the key letter `s`, you have to set the property like the following configuration:
+```
+pauseResume: {
+    ctrlOrMetaKeyNecessary: false,
+    altKeyNecessary: false,
+    keyboardKeyForPauseResumeBot: "s"
+}
+```
+
+> :warning: Beware to not use a keyboard keys combination shortcut that can collide with an already existing combination shortcut. For example, if you set `ctrl+s`, it collide with the `Save as...` functionality of the browser and you can get unwanted behaviors.
+
 # Bot speed
 The bot has a parameter that can be configured in order to set the speed of the fake cursor.
 To change the bot speed, the following property can be updated:

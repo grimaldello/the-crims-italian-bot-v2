@@ -3,6 +3,8 @@ import { LogColor, Logger } from "../logger/Logger";
 import { BotEvents } from "./BotEvents";
 import { User } from "./User";
 import { Visitor } from "./Visitor";
+import { DOMCoordinateQueue } from "./DOMCoordinateQueue";
+import { BotSettingsManager } from "./settings/BotSettingsManager";
 
 @singleton()
 export class BotEventsHandler {
@@ -13,10 +15,14 @@ export class BotEventsHandler {
     
     private user: User;
     private logger: Logger;
+    private domCoordinateQueue: DOMCoordinateQueue;
+    private botSettingsManager: BotSettingsManager;
 
     constructor() {
+        this.domCoordinateQueue = container.resolve(DOMCoordinateQueue);
         this.user = container.resolve(User);
         this.logger = container.resolve(Logger);
+        this.botSettingsManager = container.resolve(BotSettingsManager);
 
         this.currentEvent = BotEvents.NONE;
         this.initializeEventListener();
@@ -160,11 +166,67 @@ export class BotEventsHandler {
             // self.user.updateStats(data.detail);
 
         }, false);
+
+        window.addEventListener('keydown', (event) => {
+
+            const keyboardKeyForPauseResumeBot = 
+                self.botSettingsManager
+                    .getBotSettings()
+                    .general
+                    .pauseResume
+                    .keyboardKeyForPauseResumeBot
+                    .toLowerCase();
+
+            const ctrlOrMetaKeyNecessary = 
+                self.botSettingsManager
+                    .getBotSettings()
+                    .general
+                    .pauseResume
+                    .ctrlOrMetaKeyNecessary;
+
+            const altKeyNecessary = 
+                self.botSettingsManager
+                    .getBotSettings()
+                    .general
+                    .pauseResume
+                    .altKeyNecessary;
+
+            const toggleStartStopKey = event.key === keyboardKeyForPauseResumeBot;
+            const ctrlOrMetaPressed = event.ctrlKey || event.metaKey;
+            const altPressed = event.altKey;
+
+            if(ctrlOrMetaKeyNecessary && altKeyNecessary) {
+                if(ctrlOrMetaPressed && altPressed && toggleStartStopKey) {
+                    self.domCoordinateQueue.setIsBlocked(
+                        !self.domCoordinateQueue.getIsBlocked()
+                    );
+                }
+            }
+            else if(ctrlOrMetaKeyNecessary) {
+                if(ctrlOrMetaPressed && toggleStartStopKey) {
+                    self.domCoordinateQueue.setIsBlocked(
+                        !self.domCoordinateQueue.getIsBlocked()
+                    );
+                }
+            }
+            else if(altKeyNecessary) {
+                if(altPressed && toggleStartStopKey) {
+                    self.domCoordinateQueue.setIsBlocked(
+                        !self.domCoordinateQueue.getIsBlocked()
+                    );
+                }
+            }
+            else {
+                if(toggleStartStopKey) {
+                    self.domCoordinateQueue.setIsBlocked(
+                        !self.domCoordinateQueue.getIsBlocked()
+                    );
+                }
+            }
+
+        }, false);
     }
 
-    /**
-     * getCurrentEvent
-     */
     public getCurrentEvent(): BotEvents {
         return this.currentEvent;
     }

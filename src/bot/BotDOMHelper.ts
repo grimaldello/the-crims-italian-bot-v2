@@ -24,6 +24,7 @@ export class BotDOMHelper {
     private botSettingsManager: BotSettingsManager;
     private logger: Logger;
 
+    private keyboardKeyForPauseResumeBot: string;
 
     constructor() {
         container.register("middleHTMLElementDOMCoordinateStrategy", {useClass: MiddleHTMLElementDOMCoordinateStrategy});
@@ -38,6 +39,12 @@ export class BotDOMHelper {
         this.domCoordinateQueue = container.resolve(DOMCoordinateQueue);
         this.logger = container.resolve(Logger);
 
+        this.keyboardKeyForPauseResumeBot = 
+            this.botSettingsManager
+                .getBotSettings()
+                .general
+                .pauseResume
+                .keyboardKeyForPauseResumeBot;
     }
 
     public getHTMLElementByQuerySelector(querySelector: string): HTMLElement | null {
@@ -133,6 +140,14 @@ export class BotDOMHelper {
             this.botSettingsManager.getBotSettings().mouse.numberOfCoordinatesToSkip;
 
         while(this.domCoordinateQueue.getCounter() >= 0) {
+
+            if(this.domCoordinateQueue.getIsBlocked() === true) {
+                console.log(`Bot paused. Press the same combination keyboard shortcut to resume the execution` );
+                while(this.domCoordinateQueue.getIsBlocked() === true) {
+                    await this.waitUtils.waitMilliSeconds(250);
+                }
+            }
+
             const nextCoordinate: DOMCoordinate = this.domCoordinateQueue.popFirst();
             
             if(this.domCoordinateQueue.getCounter() % numberOfCoordinatesToSkip === 0) {
@@ -153,6 +168,14 @@ export class BotDOMHelper {
             this.botSettingsManager.getBotSettings().mouse.numberOfCoordinatesToSkip;
 
         while(this.domCoordinateQueue.getCounter() >= 0) {
+            
+            if(this.domCoordinateQueue.getIsBlocked() === true) {
+                console.log(`Bot paused. Press the same combination keyboard shortcut to resume the execution` );
+                while(this.domCoordinateQueue.getIsBlocked() === true) {
+                    await this.waitUtils.waitMilliSeconds(250);
+                }
+            }
+
             const nextCoordinate: DOMCoordinate = this.domCoordinateQueue.popFirst();
             
             // If input logging of the crims  is enabled

@@ -73,14 +73,13 @@ export class Bot {
     }
 
     private removeDOMElementsByQuerySelector(): void {
-        if(this.botSettingsManager.getBotSettings().general.removeImages) {
-            [
-                'img[src*="https://static-live.thecrims.com/static/images/avatars/"]',
-                'img[src*="https://static-live.thecrims.com/static/images/tc-menu-logo.png"',
-            ].forEach(selector => {
-                (document.querySelector(selector) as HTMLElement).style.display = "none";
+        this.botSettingsManager
+            .getBotSettings()
+            .general
+            .querySelectorsDOMElementsToRemove
+            .forEach(selector => {
+                (document.querySelector(selector) as HTMLElement).remove();
             });
-        }
     }
 
     public async start() {

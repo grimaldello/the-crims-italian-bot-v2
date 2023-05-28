@@ -89,7 +89,12 @@ export interface SingleAssaultCriteriaDefinition {
 }
 
 export interface GeneralSettings {
-    removeImages: boolean
+    querySelectorsDOMElementsToRemove: string[],
+    pauseResume: {
+        ctrlOrMetaKeyNecessary: boolean,
+        altKeyNecessary: boolean,
+        keyboardKeyForPauseResumeBot: string
+    }
 }
 
 export interface BotSettings {
