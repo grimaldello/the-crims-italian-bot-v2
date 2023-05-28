@@ -134,23 +134,27 @@ export class BotDOMHelper {
         endCoordinate: DOMCoordinate 
     ) {
         this.domCoordinateQueue.setQueue(
-            this.pathFinder.findPath(startCoordinate, endCoordinate));
+            this.pathFinder.findPath(startCoordinate, endCoordinate)
+        );
 
         const numberOfCoordinatesToSkip: number = 
             this.botSettingsManager.getBotSettings().mouse.numberOfCoordinatesToSkip;
 
-        while(this.domCoordinateQueue.getCounter() >= 0) {
+        while (this.domCoordinateQueue.getCounter() >= 0) {
 
-            if(this.domCoordinateQueue.getIsBlocked() === true) {
-                console.log(`Bot paused. Press the same combination keyboard shortcut to resume the execution` );
-                while(this.domCoordinateQueue.getIsBlocked() === true) {
+            if (this.domCoordinateQueue.getIsBlocked() === true) {
+                console.log(`Bot paused. Press the same combination keyboard shortcut to resume the execution`);
+                while (this.domCoordinateQueue.getIsBlocked() === true) {
                     await this.waitUtils.waitMilliSeconds(250);
                 }
             }
 
             const nextCoordinate: DOMCoordinate = this.domCoordinateQueue.popFirst();
-            
-            if(this.domCoordinateQueue.getCounter() % numberOfCoordinatesToSkip === 0) {
+
+            // If input logging of the crims  is enabled
+            // it is needed to skip some coordinate (because it consume resources the logging)
+            // (without input logging it is needed only to wait millis)
+            if (this.domCoordinateQueue.getCounter() % numberOfCoordinatesToSkip === 0) {
                 this.mouse.move(nextCoordinate);
                 await this.waitUtils.waitMilliSeconds(1);
             }
@@ -161,34 +165,10 @@ export class BotDOMHelper {
         startCoordinate: DOMCoordinate,
         endCoordinate: DOMCoordinate 
     ) {
-        this.domCoordinateQueue.setQueue(
-            this.pathFinder.findPath(startCoordinate, endCoordinate));
+        await this.moveFromStartCoordinateToEndCoordinate(startCoordinate, endCoordinate);
 
-        const numberOfCoordinatesToSkip: number = 
-            this.botSettingsManager.getBotSettings().mouse.numberOfCoordinatesToSkip;
-
-        while(this.domCoordinateQueue.getCounter() >= 0) {
-            
-            if(this.domCoordinateQueue.getIsBlocked() === true) {
-                console.log(`Bot paused. Press the same combination keyboard shortcut to resume the execution` );
-                while(this.domCoordinateQueue.getIsBlocked() === true) {
-                    await this.waitUtils.waitMilliSeconds(250);
-                }
-            }
-
-            const nextCoordinate: DOMCoordinate = this.domCoordinateQueue.popFirst();
-            
-            // If input logging of the crims  is enabled
-            // it is needed to skip some coordinate (because it consume resources the logging)
-            // (without input logging it is needed only to wait millis)
-            if(this.domCoordinateQueue.getCounter() % numberOfCoordinatesToSkip === 0) {
-                this.mouse.move(nextCoordinate);
-                await this.waitUtils.waitMilliSeconds(1);
-            }
-
-            if(this.domCoordinateQueue.isLastCoordinate()) {
-                this.mouse.click();
-            }
+        if(this.domCoordinateQueue.isLastCoordinate()) {
+            this.mouse.click();
         }
     }
 }
