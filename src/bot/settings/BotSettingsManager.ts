@@ -14,8 +14,8 @@ export class BotSettingsManager {
                     'img[src*="https://static-live.thecrims.com/static/images/tc-menu-logo.png"',
                 ],
                 pauseResume: {
-                    ctrlOrMetaKeyNecessary: false,
-                    altKeyNecessary: false,
+                    ctrlOrMetaKeyNecessary: true,
+                    altKeyNecessary: true,
                     keyboardKeyForPauseResumeBot: "s"
                 }
             },
