@@ -22,6 +22,7 @@ export class MouseSimulator {
             z-index: 10000; position: absolute;
         `;
         const defaultFakeCursor = document.createElement("span");
+        defaultFakeCursor.setAttribute("id", "fakeCursor");
         defaultFakeCursor.setAttribute("style", cursorStyle);
         return defaultFakeCursor;
     }
@@ -99,12 +100,21 @@ export class MouseSimulator {
         const mouseClickEvent: MouseEvent = this.makeMouseClickEvent(mouseEventInit);
         
         
-        const element: Element | null = 
-            document.elementFromPoint(currentFakeMouseCoordinate.x, currentFakeMouseCoordinate.y);
+        const elementsUnderCurrentCoordinate: Element[] | null = 
+            document.elementsFromPoint(currentFakeMouseCoordinate.x, currentFakeMouseCoordinate.y);
 
-        this.dispatch((element as Element), mouseDownEvent);
-        this.dispatch((element as Element), mouseUpEvent);
-        this.dispatch((element as Element), mouseClickEvent);
+        let elementToClick: Element | null;
+        
+        if(elementsUnderCurrentCoordinate[0].getAttribute("id") !== "fakeCursor") {
+            elementToClick = elementsUnderCurrentCoordinate[0];
+        }
+        else {
+            elementToClick = elementsUnderCurrentCoordinate[1];
+        }
+        
+        this.dispatch((elementToClick as Element), mouseDownEvent);
+        this.dispatch((elementToClick as Element), mouseUpEvent);
+        this.dispatch((elementToClick as Element), mouseClickEvent);
     }
 
     public move(coordinate: DOMCoordinate) {
