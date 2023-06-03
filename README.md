@@ -263,3 +263,24 @@ After the installation of the dependencies, to generate the `release.js` file th
 npm run build
 ```
 and a `dist` folder will be created with file `release.js` inside
+
+### F.A.Q.
+How do I know if my account is under "bot investigation" by The Crims crew?
+- Open the Developer tools of the browser by pressing F12 in Windows, GNU Linux (I haven't MacOS but the shortuct should be Option + ⌘ + J or search on Google)
+- You should see something similar to this:
+![image](https://github.com/grimaldello/the-crims-italian-bot-v2/assets/9029075/7ff95292-e9db-405b-bb4a-ea48870f20a6)
+
+- Then, be sure to be on Tab "Network"
+![image](https://github.com/grimaldello/the-crims-italian-bot-v2/assets/9029075/e2899cdc-3925-46ba-ab13-1eafe153afac)
+
+- Do a single robbery manually and you should see new entries appear in the table:
+![image](https://github.com/grimaldello/the-crims-italian-bot-v2/assets/9029075/b85de693-0e92-4464-8ae5-a054aa983e1c)
+
+- Click on "rob"
+- If you **are NOT under bot investigation** by The Crims crew, you see something similar to this:
+![image](https://github.com/grimaldello/the-crims-italian-bot-v2/assets/9029075/963123df-819d-4086-84e1-f6843e57f8e1)
+
+- If you **are under bot investigation** by The Crims crew, you see something siilar to this:
+![image](https://github.com/grimaldello/the-crims-italian-bot-v2/assets/9029075/dff54577-38bf-481e-b43f-4da4e37c9910)
+ 
+
