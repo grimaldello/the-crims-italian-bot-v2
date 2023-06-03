@@ -265,7 +265,7 @@ npm run build
 and a `dist` folder will be created with file `release.js` inside
 
 ### F.A.Q.
-How do I know if my account is under "bot investigation" by The Crims crew?
+**How do I know if my account is under "bot investigation" by The Crims crew?**
 - Open the Developer tools of the browser by pressing F12 in Windows, GNU Linux (I haven't MacOS but the shortuct should be Option + ⌘ + J or search on Google)
 - You should see something similar to this:
 ![image](https://github.com/grimaldello/the-crims-italian-bot-v2/assets/9029075/7ff95292-e9db-405b-bb4a-ea48870f20a6)
@@ -283,4 +283,7 @@ How do I know if my account is under "bot investigation" by The Crims crew?
 - If you **are under bot investigation** by The Crims crew, you see something similar to this:
 ![image](https://github.com/grimaldello/the-crims-italian-bot-v2/assets/9029075/dff54577-38bf-481e-b43f-4da4e37c9910)
  
+
+**When The Crims crew start for "bot investigation" in my account?**
+- Honestly, I don't know exactly. I suppose when competing for a top (both top respect and top kills) the admins start to investigate.
 
