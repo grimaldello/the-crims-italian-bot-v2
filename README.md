@@ -280,7 +280,7 @@ How do I know if my account is under "bot investigation" by The Crims crew?
 - If you **are NOT under bot investigation** by The Crims crew, you see something similar to this:
 ![image](https://github.com/grimaldello/the-crims-italian-bot-v2/assets/9029075/963123df-819d-4086-84e1-f6843e57f8e1)
 
-- If you **are under bot investigation** by The Crims crew, you see something siilar to this:
+- If you **are under bot investigation** by The Crims crew, you see something similar to this:
 ![image](https://github.com/grimaldello/the-crims-italian-bot-v2/assets/9029075/dff54577-38bf-481e-b43f-4da4e37c9910)
  
 
