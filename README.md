@@ -1,5 +1,7 @@
 # The Crims Italian Bot V2
 
+[Discord Server](https://discord.gg/4WzCZCcK)
+
 This is a new version of the bot [The Crims Italian Bot](https://github.com/grimaldello/the-crims-italian-bot) that I've developed to play the online game [The Crims](https://www.thecrims.com) without manually performing most of the tedious tasks of the game.
 
 The bot V2 has been rewritten from the beginning.
