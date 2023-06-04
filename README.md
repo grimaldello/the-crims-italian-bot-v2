@@ -1,7 +1,5 @@
 # The Crims Italian Bot V2
 
-[Discord Server](https://discord.gg/4WzCZCcK)
-
 This is a new version of the bot [The Crims Italian Bot](https://github.com/grimaldello/the-crims-italian-bot) that I've developed to play the online game [The Crims](https://www.thecrims.com) without manually performing most of the tedious tasks of the game.
 
 The bot V2 has been rewritten from the beginning.
@@ -10,6 +8,9 @@ Noteworthy improvements are:
 - **Anti-logging mechanism** in order to emulate mouse click and movement (the previous bot lack of this). It can be surely improved, but the basics are in.
 - **Added start menu** for selecting the bot action to perform 
 - (For developers) **Typescript** as programming language in order to have better code organization
+
+# Do you wanna chat with me or other contributors? 
+For discussion not related to the development of the bot, please join this discord server: [Discord Server](https://discord.gg/4WzCZCcK)
 
 # First thing first
 I have made this bot on my free time.
