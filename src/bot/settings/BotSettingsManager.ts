@@ -9,6 +9,7 @@ export class BotSettingsManager {
     constructor() {
         this.botSettings = {
             general: {
+                secondsIntervalForBotUsageInvestigationCheck: 60,
                 querySelectorsDOMElementsToRemove: [
                     'img[src*="https://static-live.thecrims.com/static/images/avatars/"]',
                     'img[src*="https://static-live.thecrims.com/static/images/tc-menu-logo.png"',

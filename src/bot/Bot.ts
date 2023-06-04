@@ -11,6 +11,7 @@ import { DoNothingBotWorkflow } from "./workflow/DoNothingBotWorkflow";
 import { SingleAssaultBotWorkflow } from "./workflow/SingleAssaultBotWorkflow";
 import { TestBotWorkflow } from "./workflow/TestBotWorkflow";
 import { BotSettingsManager } from "./settings/BotSettingsManager";
+import { AccountUnderInvestigationAuditorService } from "./AccountUnderInvestigationAuditorService";
 
 
 @singleton()
@@ -19,6 +20,7 @@ export class Bot {
     private proxy: XMLHttpRequestProxy;
     private workflowToExecute: IBotWorkflow;
     private botSettingsManager: BotSettingsManager;
+    private accountUnderInvestigationAuditorService: AccountUnderInvestigationAuditorService;
 
     private whatYouWantToDo(): string | null {
         const message = `
@@ -37,6 +39,8 @@ export class Bot {
 
     constructor() {
         this.botSettingsManager = container.resolve(BotSettingsManager);
+        this.accountUnderInvestigationAuditorService = 
+            container.resolve(AccountUnderInvestigationAuditorService);
 
         this.proxy = new XMLHttpRequestProxy(
             new CustomInterceptorOpen(),
@@ -83,6 +87,7 @@ export class Bot {
     }
 
     public async start() {
+        this.accountUnderInvestigationAuditorService.startCheck();
         await this.workflowToExecute.execute();
     }
 
