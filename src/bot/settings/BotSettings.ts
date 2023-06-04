@@ -89,6 +89,7 @@ export interface SingleAssaultCriteriaDefinition {
 }
 
 export interface GeneralSettings {
+    secondsIntervalForBotUsageInvestigationCheck: number,
     querySelectorsDOMElementsToRemove: string[],
     pauseResume: {
         ctrlOrMetaKeyNecessary: boolean,
