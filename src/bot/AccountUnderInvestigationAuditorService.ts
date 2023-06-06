@@ -24,26 +24,51 @@ export class AccountUnderInvestigationAuditorService {
 
         let intervalPid: any;
         const functionChecker = () =>{
+            
+            // ###### TEST MOCK ######
+            // Uncomment the lines below to simulate bot investigation
+            // const userLocalStorageObject = JSON.parse(localStorage.getItem("test") as string).User;
+            // localStorage.setItem("test",JSON.stringify({User:{user_input:[{a: "aaa"},{b: "bbb"},{c: "ccc"}]}}));
+            // ########################
+            
             const userLocalStorageObject = JSON.parse(localStorage.getItem("vuex") as string).User;
+            
             if(userLocalStorageObject.user_input.length > 0) {
+                
+                clearInterval(intervalPid);
+
                 this.logger.error(
                     `IT SEEMS THAT YOUR ACCOUNT IS UNDER INVESTIGATION FOR BOT USAGE BY THE CRIMS CREW`, 
                     LogColor.WARNING
                 );
                 this.logger.error(
-                    `THIS COULD MEAN THAT THERE ARE CHANCES FOR GETTING BANNED FOR BOT USAGE`, 
+                    `THIS COULD MEAN THAT THERE ARE CHANCES YOU GET BANNED FOR BOT USAGE IF YOU CONTINUE TO USE THE BOT`, 
                     LogColor.WARNING
                 );
                 this.logger.error(
-                    `THE FOLLOWING LOGGING HAS BEEN FOUND: ${userLocalStorageObject.user_input}`,
+                    [
+                        `THE CREW IS TRACKING YOUR MOUSE MOVEMENTS AND CLICK.`,
+                        `HERE SOME OF THE DATA GATHERED:`
+                    ].join(" "),
                     LogColor.WARNING
                 );
-                this.logger.error(`${userLocalStorageObject.user_input}`, LogColor.WARNING);
-                alert(`
-                    YOUR ACCOUNT SEEMS TO BE UNDER INVESTIGATION FOR BOT USAGE.
-                    CHECK THE CONSOLE FOR MORE DETAILS.
-                `);
-                clearInterval(intervalPid);
+
+                const stringifiedLogs: string = JSON.stringify(userLocalStorageObject.user_input,null,2);
+
+                this.logger.error(`${stringifiedLogs}`, LogColor.WARNING);
+
+                this.logger.error([
+                        "YOU CAN IGNORE THIS WARNING MESSAGE AND CONTINUE TO USE THE BOT",
+                        "OR STOP USE IT BY PRESSING REFRESH BUTTON OF THE BROWSER"
+                    ].join(" "),
+                    LogColor.WARNING
+                );
+
+                alert(
+                    "YOUR ACCOUNT SEEMS TO BE UNDER INVESTIGATION FOR BOT USAGE." +
+                    "\n" +
+                    "CHECK THE CONSOLE FOR MORE DETAILS."
+                );
             }
             else {
                 this.logger.info(
@@ -60,7 +85,7 @@ export class AccountUnderInvestigationAuditorService {
                 );
             }
         };
-        functionChecker();
         intervalPid = setInterval(functionChecker, secondsIntervalForBotUsageInvestigationCheck*1000);
+        functionChecker();
     }
 }
