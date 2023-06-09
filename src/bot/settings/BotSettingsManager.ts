@@ -10,15 +10,16 @@ export class BotSettingsManager {
         this.botSettings = {
             general: {
                 secondsIntervalForBotUsageInvestigationCheck: 60,
-                querySelectorsDOMElementsToRemove: [
-                    'img[src*="https://static-live.thecrims.com/static/images/avatars/"]',
-                    'img[src*="https://static-live.thecrims.com/static/images/tc-menu-logo.png"',
-                ],
+                querySelectorsDOMElementsToRemove: [],
                 pauseResume: {
                     ctrlOrMetaKeyNecessary: true,
                     altKeyNecessary: true,
                     keyboardKeyForPauseResumeBot: "s"
                 }
+            },
+            coordinatePathStrategy: {
+                useLinearPathStrategy: false,
+                useTailWindPathStrategy: true
             },
             rechargeEnergy: {
                 useRandomRaveForRecharge: true,

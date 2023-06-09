@@ -1,4 +1,5 @@
 export interface DOMCoordinate {
     x: number,
-    y: number
+    y: number,
+    millisecondsToWait?: number
 }

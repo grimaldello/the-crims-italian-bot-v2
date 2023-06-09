@@ -60,7 +60,7 @@ querySelectorsDOMElementsToRemove: [
 ],
 ```
 
-By default the following DOM elements are removed:
+For example to remove some images:
 
 ```
 querySelectorsDOMElementsToRemove: [
@@ -68,6 +68,23 @@ querySelectorsDOMElementsToRemove: [
     'img[src*="https://static-live.thecrims.com/static/images/tc-menu-logo.png"',
 ],
 ```
+
+
+# Mouse movement path strategy
+The bot has a feature that permits to set the path strategy to use for mouse movement.
+
+The following property can be used in order to set the mouse movement path strategy to use:
+
+```
+coordinatePathStrategy: {
+    useLinearPathStrategy: false,
+    useTailWindPathStrategy: true
+},
+```
+
+Just se to `true` (and the other to `false`) the strategy you want to use.
+
+At the moment is not possible to change values parameters for the strategies.
 
 
 # Pause and resume bot
