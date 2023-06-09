@@ -11,6 +11,7 @@ import { IDOMCoordinatePathFinderStrategy } from "../pathfinder/IDOMCoordinatePa
 import { LinearDOMCoordinatePathFinderStrategy } from "../pathfinder/LinearDOMCoordinatePathFinderStrategy";
 import { DOMCoordinateQueue } from "./DOMCoordinateQueue";
 import { BotSettingsManager } from "./settings/BotSettingsManager";
+import { TailWindDOMCoordinatePathFinderStrategy } from "../pathfinder/TailWindDOMCoordinatePathFinderStrategy";
 
 @singleton()
 export class BotDOMHelper {
@@ -33,7 +34,8 @@ export class BotDOMHelper {
 
         this.mouse = container.resolve(MouseSimulator);
         this.helper = container.resolve(HTMLElementHelper);
-        this.pathFinder = container.resolve(LinearDOMCoordinatePathFinderStrategy);
+        // this.pathFinder = container.resolve(LinearDOMCoordinatePathFinderStrategy);
+        this.pathFinder = container.resolve(TailWindDOMCoordinatePathFinderStrategy);
         this.waitUtils = container.resolve(WaitUtils);
         this.randomUtils = container.resolve(RandomUtils);
         this.domCoordinateQueue = container.resolve(DOMCoordinateQueue);
@@ -136,7 +138,6 @@ export class BotDOMHelper {
         this.domCoordinateQueue.setQueue(
             this.pathFinder.findPath(startCoordinate, endCoordinate)
         );
-
         const numberOfCoordinatesToSkip: number = 
             this.botSettingsManager.getBotSettings().mouse.numberOfCoordinatesToSkip;
 
@@ -155,8 +156,12 @@ export class BotDOMHelper {
             // it is needed to skip some coordinate (because it consume resources the logging)
             // (without input logging it is needed only to wait millis)
             if (this.domCoordinateQueue.getCounter() % numberOfCoordinatesToSkip === 0) {
+                let timeToWait: number = 1;
+                if(nextCoordinate.millisecondsToWait) {
+                    timeToWait = nextCoordinate.millisecondsToWait;
+                }
                 this.mouse.move(nextCoordinate);
-                await this.waitUtils.waitMilliSeconds(1);
+                await this.waitUtils.waitMilliSeconds(timeToWait);
             }
         }
     }
