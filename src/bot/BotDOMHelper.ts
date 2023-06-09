@@ -11,7 +11,7 @@ import { IDOMCoordinatePathFinderStrategy } from "../pathfinder/IDOMCoordinatePa
 import { LinearDOMCoordinatePathFinderStrategy } from "../pathfinder/LinearDOMCoordinatePathFinderStrategy";
 import { DOMCoordinateQueue } from "./DOMCoordinateQueue";
 import { BotSettingsManager } from "./settings/BotSettingsManager";
-import { TailWindDOMCoordinatePathFinderStrategy } from "../pathfinder/TailWindDOMCoordinatePathFinderStrategy";
+import { WindDOMCoordinatePathFinderStrategy } from "../pathfinder/WindDOMCoordinatePathFinderStrategy";
 
 @singleton()
 export class BotDOMHelper {
@@ -34,12 +34,13 @@ export class BotDOMHelper {
 
         this.mouse = container.resolve(MouseSimulator);
         this.helper = container.resolve(HTMLElementHelper);
-        // this.pathFinder = container.resolve(LinearDOMCoordinatePathFinderStrategy);
-        this.pathFinder = container.resolve(TailWindDOMCoordinatePathFinderStrategy);
         this.waitUtils = container.resolve(WaitUtils);
         this.randomUtils = container.resolve(RandomUtils);
         this.domCoordinateQueue = container.resolve(DOMCoordinateQueue);
         this.logger = container.resolve(Logger);
+        this.pathFinder = container.resolve(LinearDOMCoordinatePathFinderStrategy);
+
+        this.setPathFinder();
 
         this.keyboardKeyForPauseResumeBot = 
             this.botSettingsManager
@@ -47,6 +48,16 @@ export class BotDOMHelper {
                 .general
                 .pauseResume
                 .keyboardKeyForPauseResumeBot;
+    }
+
+    private setPathFinder(): void {
+        if(this.botSettingsManager.getBotSettings().coordinatePathStrategy.useLinearPathStrategy) {
+            this.pathFinder = container.resolve(LinearDOMCoordinatePathFinderStrategy);
+
+        }
+        else if(this.botSettingsManager.getBotSettings().coordinatePathStrategy.useTailWindPathStrategy) {
+            this.pathFinder = container.resolve(WindDOMCoordinatePathFinderStrategy);
+        }
     }
 
     public getHTMLElementByQuerySelector(querySelector: string): HTMLElement | null {

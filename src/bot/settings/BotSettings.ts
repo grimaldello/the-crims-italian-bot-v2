@@ -98,6 +98,11 @@ export interface GeneralSettings {
     }
 }
 
+export interface CoordinatePathStrategy {
+    useLinearPathStrategy: boolean,
+    useTailWindPathStrategy: boolean
+}
+
 export interface BotSettings {
     general: GeneralSettings,
     mouse: MouseSettings,
@@ -106,7 +111,8 @@ export interface BotSettings {
     singleAssault: SingleAssaultSettings,
     rechargeEnergy: RechargeEnergySettings
     singleRobbery: SingleRobberySettings,
-    gangRobbery: GangRobberySettings
+    gangRobbery: GangRobberySettings,
+    coordinatePathStrategy: CoordinatePathStrategy
 }
 
 export class ProfessionLevelMapping {

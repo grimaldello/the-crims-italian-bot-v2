@@ -1,15 +1,15 @@
 import { DOMCoordinate } from "../commons/DOMCoordinate";
 import { IDOMCoordinatePathFinderStrategy } from "./IDOMCoordinatePathFinderStrategy";
 
-export class TailWindDOMCoordinatePathFinderStrategy implements IDOMCoordinatePathFinderStrategy {
+export class WindDOMCoordinatePathFinderStrategy implements IDOMCoordinatePathFinderStrategy {
 
     // private readonly mouseSpeed: number = Math.floor(Math.random() * 10);
     // private readonly randomSeed: number =  Math.floor(Math.random() * 10);
     // private readonly randomSpeed: number = Math.max((this.randomSeed / 2.0 + this.mouseSpeed) / 10.0, 0.1);
-    private maxStep: number = Math.ceil(Math.random() * 1);
+    private maxStep: number = Math.ceil(Math.random() * 1); // Increment the speed
     
-    private readonly wind: number = Math.ceil(Math.random() * 1);
-    private readonly gravity: number = Math.ceil(Math.random() * 1);
+    private wind: number = Math.ceil(Math.random() * 1);
+    private readonly gravity: number = Math.ceil(Math.random() * 1);    // Increment speed
     private readonly targetArea: number = Math.ceil(Math.random() * 1);
     
     private readonly minWait: number = 2;
