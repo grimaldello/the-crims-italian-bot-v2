@@ -3,14 +3,14 @@ import { IDOMCoordinatePathFinderStrategy } from "./IDOMCoordinatePathFinderStra
 
 export class TailWindDOMCoordinatePathFinderStrategy implements IDOMCoordinatePathFinderStrategy {
 
-    private readonly mouseSpeed: number = Math.floor(Math.random() * 10);
-    private readonly randomSeed: number =  Math.floor(Math.random() * 10);
-    private readonly randomSpeed: number = Math.max((this.randomSeed / 2.0 + this.mouseSpeed) / 10.0, 0.1);
-    private maxStep: number = Math.ceil(Math.random() * 2);
+    // private readonly mouseSpeed: number = Math.floor(Math.random() * 10);
+    // private readonly randomSeed: number =  Math.floor(Math.random() * 10);
+    // private readonly randomSpeed: number = Math.max((this.randomSeed / 2.0 + this.mouseSpeed) / 10.0, 0.1);
+    private maxStep: number = Math.ceil(Math.random() * 1);
     
-    private readonly wind: number = Math.ceil(Math.random() * 10);
-    private readonly gravity: number = Math.ceil(Math.random() * 10);
-    private readonly targetArea: number = Math.ceil(Math.random() * 10);
+    private readonly wind: number = Math.ceil(Math.random() * 1);
+    private readonly gravity: number = Math.ceil(Math.random() * 1);
+    private readonly targetArea: number = Math.ceil(Math.random() * 1);
     
     private readonly minWait: number = 2;
     private readonly maxWait: number = Math.ceil(Math.random() * 5);
@@ -28,8 +28,8 @@ export class TailWindDOMCoordinatePathFinderStrategy implements IDOMCoordinatePa
         let dist: number = 
             this.calculateHypotenuse(endCoordinate.x - startCoordinate.x, endCoordinate.y - startCoordinate.y);
 
-        let windX: number = Math.floor(Math.random() * 10);
-        let windY: number = Math.floor(Math.random() * 10);
+        let windX: number = Math.floor(Math.random() * 1);
+        let windY: number = Math.floor(Math.random() * 1);
         let velocityX: number = 0;
         let velocityY: number = 0;
         let randomDist: number;
