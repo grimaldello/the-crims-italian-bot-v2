@@ -55,14 +55,14 @@ The bot has a feature that permits to remove DOM elements from the page so they 
 
 The DOM elements that have to be removed must be defined in the following property, using its query selector:
 
-```
+```js
 querySelectorsDOMElementsToRemove: [
 ],
 ```
 
 For example to remove some images:
 
-```
+```js
 querySelectorsDOMElementsToRemove: [
     'img[src*="https://static-live.thecrims.com/static/images/avatars/"]',
     'img[src*="https://static-live.thecrims.com/static/images/tc-menu-logo.png"',
@@ -75,7 +75,7 @@ The bot has a feature that permits to set the path strategy to use for mouse mov
 
 The following property can be used in order to set the mouse movement path strategy to use:
 
-```
+```js
 coordinatePathStrategy: {
     useLinearPathStrategy: false,
     useWindPathStrategy: true
@@ -103,7 +103,7 @@ If the combination is pressed while the bot is running, then the bot will pause.
 If the combination is pressed while the bot is paused, then the bot will continue from where it paused. 
 
 The keyboard keys combination shortcut to pause and resume the bot execution, can be customized by changing the following properties:
-```
+```js
 pauseResume: {
     ctrlOrMetaKeyNecessary: true,
     altKeyNecessary: true,
@@ -112,7 +112,7 @@ pauseResume: {
 ```
 
 For example, if you want to pause and resume the bot execution with the shortcut `alt+p`, you have to set the property like the following configuration:
-```
+```js
 pauseResume: {
     ctrlOrMetaKeyNecessary: false,
     altKeyNecessary: true,
@@ -121,7 +121,7 @@ pauseResume: {
 ```
 
 If you want to pause and resume the bot execution by only pressing the key letter `s`, you have to set the property like the following configuration:
-```
+```js
 pauseResume: {
     ctrlOrMetaKeyNecessary: false,
     altKeyNecessary: false,
@@ -134,7 +134,7 @@ pauseResume: {
 # Bot speed
 The bot has a parameter that can be configured in order to set the speed of the fake cursor.
 To change the bot speed, the following property can be updated:
-```
+```js
 mouse: {
     numberOfCoordinatesToSkip: 4
 },
@@ -150,7 +150,7 @@ Moreover from my tests, the bot speed is CPU dependant: a more powerful CPU will
 # Recharging
 By default the bot will use a random rave in order to recharge.
 You can set to use favorite rave by changing the following setting to `false`:
-```
+```js
 useRandomRaveForRecharge: false,
 ```
 This way the bot will use the first favorite rave.
@@ -159,7 +159,7 @@ There's a fallback for this: if no favorite rave is found, it will use a random 
 # Detox
 By default the bot will perform detox if current addiction is a random value in a range of min and a max value.
 You can change the threshold by changing the following setting:
-```
+```js
 detox: {
     threshold: {
         min: 25,
@@ -178,16 +178,42 @@ The bot automatically will perform the currently selected single robbery and whe
 For gang robbery you must be in a gang that is performing gang robbery (virtual or not).
 Then the bot will press `Accept` or `Do the score` button automatically and also will recharge when necessary.
 You can also disable the press of `Do the score` button automatically (for example when robbing in a not virtual gang) by changing the following setting:
-```
+```js
 gangRobbery: {
     ...
     clickOnDoTheScoreButton: false
 }
 ```
 
+# Wait to be killed by specific users
+The bot has a feature that permits to define a list of usernames or user id that are allowed to kill us.
+If a user (or user id) that is NOT in the above mentioned lists, enters in rave, the bot will exit.
+If a user (or user id) that is in one of the above lists, enters in rave, bot will remain in rave and wait to be killed.
+
+```js
+waitToBeKilled: {
+    visitorsListAllowedToKill: [],
+    idVisitorsListAllowedToKill: [],
+    ...
+    ...
+},
+```
+
+The username check is case insensitive, so there is no difference between the username `Greg` or `greg` or `GrEg`.
+
+For example, to allow only user `Greg` or user with id `666` to kill us, the above setting should configured like this:
+```js
+waitToBeKilled: {
+    visitorsListAllowedToKill: ["Greg"],
+    idVisitorsListAllowedToKill: ["666"],
+    ...
+    ...
+},
+```
+
 # Hunting
 You have to set the max level, min and max respect for each profession in the following settings:
-```
+```js
 singleAssault: {
     criteriaAssault: {
         CHARACTER_BROKER: {
@@ -239,7 +265,7 @@ The `minRespect` and `maxRespect` properties, indicate the min and max respect, 
 **If both level criteria and respect criteria are matched,the victim will be assaulted** (otherwise exit from rave)
 
 Example of configuration for Robber profession:
-```
+```js
 CHARACTER_ROBBER: {
     maxLevel: 10,
     minRespect: 50000,
@@ -255,7 +281,7 @@ The above configuration is valid for Robber victim that:
 
 You can also set a list of victims username or victims id to avoid to kill and exit instantly from the rave.
 You can set usernames or ids list in the following settings:
-```
+```js
 victimUsernameToAvoidToKillList: ["USERNAME_1", "USERNAME_2", ... , "USERNAME_x"],
 victimIdsToAvoidToKillList: ["ID_1", "ID_2", ... , "ID_X"]
 ```
@@ -264,6 +290,8 @@ For example to avoid to kill victim (and exit from rave) if username of victim i
 victimUsernameToAvoidToKillList: ["foo", "bar"],
 victimIdsToAvoidToKillList: ["123456789"]
 ```
+
+
 
 # Local Development
 If you want to develop locally the bot, first of all you need to install:

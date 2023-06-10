@@ -5,7 +5,7 @@ export interface RechargeEnergySettings {
     millisecondsToWaitAfterEnterRave: {
         min: number,
         max: number
-    }
+    },
     millisecondsToWaitAfterEnterRaveIfVisitorInside: {
         min: number,
         max: number
@@ -103,6 +103,19 @@ export interface CoordinatePathStrategy {
     useWindPathStrategy: boolean
 }
 
+export interface WaitToBeKilled {
+    visitorsListAllowedToKill: string[],
+    idVisitorsListAllowedToKill: string[],
+    millisecondsToWaitAfterExitRave: {
+        min: number,
+        max: number
+    },
+    millisecondsToWaitBeforeExitWhenVisitorComeInsideRave: {
+        min: number,
+        max: number
+    },
+}
+
 export interface BotSettings {
     general: GeneralSettings,
     mouse: MouseSettings,
@@ -112,7 +125,8 @@ export interface BotSettings {
     rechargeEnergy: RechargeEnergySettings
     singleRobbery: SingleRobberySettings,
     gangRobbery: GangRobberySettings,
-    coordinatePathStrategy: CoordinatePathStrategy
+    coordinatePathStrategy: CoordinatePathStrategy,
+    waitToBeKilled: WaitToBeKilled
 }
 
 export class ProfessionLevelMapping {

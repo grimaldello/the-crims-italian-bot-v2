@@ -17,6 +17,18 @@ export class BotSettingsManager {
                     keyboardKeyForPauseResumeBot: "s"
                 }
             },
+            waitToBeKilled: {
+                visitorsListAllowedToKill: [],
+                idVisitorsListAllowedToKill: [],
+                millisecondsToWaitAfterExitRave: {
+                    min: 500,
+                    max: 1000,
+                },
+                millisecondsToWaitBeforeExitWhenVisitorComeInsideRave: {
+                    min: 100,
+                    max: 400
+                }
+            },
             coordinatePathStrategy: {
                 useLinearPathStrategy: false,
                 useWindPathStrategy: true
