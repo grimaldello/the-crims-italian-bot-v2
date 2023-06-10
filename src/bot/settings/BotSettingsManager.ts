@@ -19,7 +19,7 @@ export class BotSettingsManager {
             },
             coordinatePathStrategy: {
                 useLinearPathStrategy: false,
-                useTailWindPathStrategy: true
+                useWindPathStrategy: true
             },
             rechargeEnergy: {
                 useRandomRaveForRecharge: true,

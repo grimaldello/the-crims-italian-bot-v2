@@ -55,7 +55,7 @@ export class BotDOMHelper {
             this.pathFinder = container.resolve(LinearDOMCoordinatePathFinderStrategy);
 
         }
-        else if(this.botSettingsManager.getBotSettings().coordinatePathStrategy.useTailWindPathStrategy) {
+        else if(this.botSettingsManager.getBotSettings().coordinatePathStrategy.useWindPathStrategy) {
             this.pathFinder = container.resolve(WindDOMCoordinatePathFinderStrategy);
         }
     }

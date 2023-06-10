@@ -78,7 +78,7 @@ The following property can be used in order to set the mouse movement path strat
 ```
 coordinatePathStrategy: {
     useLinearPathStrategy: false,
-    useTailWindPathStrategy: true
+    useWindPathStrategy: true
 },
 ```
 

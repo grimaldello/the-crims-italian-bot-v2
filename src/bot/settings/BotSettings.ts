@@ -100,7 +100,7 @@ export interface GeneralSettings {
 
 export interface CoordinatePathStrategy {
     useLinearPathStrategy: boolean,
-    useTailWindPathStrategy: boolean
+    useWindPathStrategy: boolean
 }
 
 export interface BotSettings {
