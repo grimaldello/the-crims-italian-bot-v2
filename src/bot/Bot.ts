@@ -12,7 +12,7 @@ import { SingleAssaultBotWorkflow } from "./workflow/SingleAssaultBotWorkflow";
 import { TestBotWorkflow } from "./workflow/TestBotWorkflow";
 import { BotSettingsManager } from "./settings/BotSettingsManager";
 import { AccountUnderInvestigationAuditorService } from "./AccountUnderInvestigationAuditorService";
-
+import { WaitToBeKilledBotWorkflow } from "./workflow/WaitToBeKilledBotWorkflow";
 
 @singleton()
 export class Bot {
@@ -31,6 +31,7 @@ export class Bot {
         3) Single Assault
         4) Recharge only
         5) Detox only
+        6) Wait to be killed
         x) Exit
 
         `;
@@ -66,6 +67,9 @@ export class Bot {
                 break;
             case "5":
                 this.workflowToExecute = container.resolve(DetoxBotWorkflow);
+                break;
+            case "6":
+                this.workflowToExecute = container.resolve(WaitToBeKilledBotWorkflow);
                 break;
             case "t":
                 this.workflowToExecute = container.resolve(TestBotWorkflow);
