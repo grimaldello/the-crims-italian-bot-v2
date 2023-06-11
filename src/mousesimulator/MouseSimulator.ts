@@ -1,15 +1,19 @@
-import { singleton } from "tsyringe";
+import { container, singleton } from "tsyringe";
 import { DOMCoordinate } from "../commons/DOMCoordinate";
+import { RandomUtils } from "../commons/RandomUtils";
 
 @singleton()
 export class MouseSimulator {
 
     // private dispatcher: DOMCoordinateEventDispatcher = container.resolve(DOMCoordinateEventDispatcher);
     private fakeCursor: HTMLElement;
+    private randomUtils: RandomUtils;
 
     constructor() {
         this.fakeCursor = this.createDefaultCursor();
         document.body.prepend(this.fakeCursor);
+
+        this.randomUtils = container.resolve(RandomUtils);
     }
 
     private createDefaultCursor(): HTMLElement {
@@ -24,6 +28,8 @@ export class MouseSimulator {
         const defaultFakeCursor = document.createElement("span");
         defaultFakeCursor.setAttribute("id", "fakeCursor");
         defaultFakeCursor.setAttribute("style", cursorStyle);
+        defaultFakeCursor.style.top = this.randomUtils.intBetween(0, window.innerWidth) + "px";
+        defaultFakeCursor.style.left = this.randomUtils.intBetween(0, window.innerWidth) + "px";
         return defaultFakeCursor;
     }
 
@@ -55,7 +61,6 @@ export class MouseSimulator {
     }
 
     private dispatch(element: Element, event: Event) {
-        
         if(element !== null) {
             element.dispatchEvent(event);
         }
@@ -121,6 +126,4 @@ export class MouseSimulator {
         this.moveFakeCursor(coordinate);
         this.dispatchMoveEvent(coordinate);
     }
-
-
 }
