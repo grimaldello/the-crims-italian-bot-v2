@@ -10,10 +10,10 @@ export class MouseSimulator {
     private randomUtils: RandomUtils;
 
     constructor() {
+        this.randomUtils = container.resolve(RandomUtils);
         this.fakeCursor = this.createDefaultCursor();
         document.body.prepend(this.fakeCursor);
 
-        this.randomUtils = container.resolve(RandomUtils);
     }
 
     private createDefaultCursor(): HTMLElement {
