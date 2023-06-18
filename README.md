@@ -10,7 +10,7 @@ Noteworthy improvements are:
 - (For developers) **Typescript** as programming language in order to have better code organization
 
 # Do you wanna chat with me or other contributors? 
-For discussion not related to the development of the bot, please join this discord server: [Discord Server](https://discord.gg/4WzCZCcK)
+For discussion not related to the development of the bot, please join this discord server: [Discord Server](https://discord.gg/YBU2yBbZUq)
 
 # First thing first
 I have made this bot on my free time.
