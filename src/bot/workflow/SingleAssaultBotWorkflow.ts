@@ -70,6 +70,10 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
             this.botSettingsManager.getBotSettings()
                 .singleAssault.victimIdsToAvoidToKillList;
         
+        const victimCountriesToAvoidToKillList: string[] = 
+                this.botSettingsManager.getBotSettings()
+                    .singleAssault.victimCountriesToAvoidToKillList.map((e) => e.toLowerCase());
+
         this.logger.info(`Victim username: ${candidateVictim.username}`, LogColor.WARNING);
         this.logger.info(`Checking if username victim is in [${usernameVictimToAvoidToKillList}]`, LogColor.WARNING);
 
@@ -82,6 +86,13 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
         this.logger.info(`Checking if id victim is in [${idsVictimToAvoidToKillList}]`, LogColor.WARNING);
         if(idsVictimToAvoidToKillList.includes(""+candidateVictim.id)) {
             this.logger.info(`Id victim is in the avoid to kill list`, LogColor.WARNING);
+            avoidToKill = true;
+        }
+
+        this.logger.info(`Victim country: ${candidateVictim.country}`, LogColor.WARNING);
+        this.logger.info(`Checking if country victim is in [${idsVictimToAvoidToKillList}]`, LogColor.WARNING);
+        if(victimCountriesToAvoidToKillList.includes(""+candidateVictim.country?.toLowerCase())) {
+            this.logger.info(`Victim country is in the avoid to kill list`, LogColor.WARNING);
             avoidToKill = true;
         }
         return avoidToKill;

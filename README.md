@@ -291,7 +291,52 @@ victimUsernameToAvoidToKillList: ["foo", "bar"],
 victimIdsToAvoidToKillList: ["123456789"]
 ```
 
+There is also the functionality to avoid to kill victim (and exit from rave) if country is in specific set.
+For example, to avoid to kill italian and brazilian players:
+```
+victimCountriesToAvoidToKillList: ["IT", "BR"],
+```
 
+You can also use the above settings, to kill only specific country players. To do this, you have to set all countries, except the ones of the players you want to kill.
+For example, to kill only italian players:
+```
+victimCountriesToAvoidToKillList: ["EN","SV","PL","ES","PT","SI","CZ","DE","RO","LT","EL","NO","EG","RU","BR","TR","ID","AL","LV","SK","FR","FI","CS","CN","CNT","MS","BG"]
+
+```
+`"IT"` is not present in the list, so only italian players will be attacked.
+> :warning:  Beware that will be killed players also of other countries not present in lists, that I don't know the country code.
+
+Mapping of the "main" country codes is the following (please report if a mapping is wrong or new mapping for countries not present in the list):
+```
+English - EN
+Svenska - SV
+Polska - PL
+Spanish - ES
+Portuguese - PT
+Slovenian - SI
+Czech - CZ
+Deutsch - DE
+Romanian - RO
+Lithuanian - LT
+Greek - EL
+Norsk - NO
+Arabic - EG
+Italian - IT
+Russian - RU
+Brazilian - BR
+Turkish - TR
+Indonesian - ID
+Albanian - AL
+Latvian - LV
+Slovak - SK
+French - FR
+Finnish - FI
+Serbian - CS
+Chinese - CN
+Chinese Traditional - CNT
+Malay - MS
+Bulgarian - BG
+```
 
 # Local Development
 If you want to develop locally the bot, first of all you need to install:

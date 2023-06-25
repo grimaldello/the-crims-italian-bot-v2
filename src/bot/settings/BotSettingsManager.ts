@@ -122,7 +122,8 @@ export class BotSettingsManager {
                     max: 6000
                 },
                 victimUsernameToAvoidToKillList: [],
-                victimIdsToAvoidToKillList: []
+                victimIdsToAvoidToKillList: [],
+                victimCountriesToAvoidToKillList: []
             },
             singleRobbery: {
                 makeRandomMovement: true
