@@ -66,6 +66,7 @@ export class BotEventsHandler {
            visitorInfo += `Username: ${visitor.username}\n`;
            visitorInfo += `Respect: ${visitor.respect}\n`;
            visitorInfo += `Level: ${visitor.level_text_name}\n`;
+           visitorInfo += `Country: ${visitor.country}\n`;
            visitorInfo += `Character: ${visitor.character_text_name}`;
            this.logger.info(visitorInfo, LogColor.WARNING);
         }

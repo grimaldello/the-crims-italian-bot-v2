@@ -67,6 +67,7 @@ export interface SingleAssaultSettings {
     },
     victimUsernameToAvoidToKillList: string[],
     victimIdsToAvoidToKillList: string[],
+    victimCountriesToAvoidToKillList: string[],
     criteriaAssault: SingleAssaultCriteriaDefinition
 }
 
