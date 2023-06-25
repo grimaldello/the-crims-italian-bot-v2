@@ -277,7 +277,7 @@ The above configuration is valid for Robber victim that:
 - respect is >= 50000
 - respect is <= 50000000
 
-**Avoid to kill some users**
+# Avoid to kill user by ID or Username
 
 You can also set a list of victims username or victims id to avoid to kill and exit instantly from the rave.
 You can set usernames or ids list in the following settings:
@@ -290,21 +290,12 @@ For example to avoid to kill victim (and exit from rave) if username of victim i
 victimUsernameToAvoidToKillList: ["foo", "bar"],
 victimIdsToAvoidToKillList: ["123456789"]
 ```
-
+# Avoid to kill user by country
 There is also the functionality to avoid to kill victim (and exit from rave) if country is in specific set.
 For example, to avoid to kill italian and brazilian players:
 ```
 victimCountriesToAvoidToKillList: ["IT", "BR"],
 ```
-
-You can also use the above settings, to kill only specific country players. To do this, you have to set all countries, except the ones of the players you want to kill.
-For example, to kill only italian players:
-```
-victimCountriesToAvoidToKillList: ["EN","SV","PL","ES","PT","SI","CZ","DE","RO","LT","EL","NO","EG","RU","BR","TR","ID","AL","LV","SK","FR","FI","CS","CN","CNT","MS","BG"]
-
-```
-`"IT"` is not present in the list, so only italian players will be attacked.
-> :warning:  Beware that will be killed players also of other countries not present in lists, that I don't know the country code.
 
 Mapping of the "main" country codes is the following (please report if a mapping is wrong or new mapping for countries not present in the list):
 ```
@@ -337,6 +328,16 @@ Chinese Traditional - CNT
 Malay - MS
 Bulgarian - BG
 ```
+
+# Kill user by country
+You can also use the above settings, to kill only specific country players. To do this, you have to set all countries, except the ones of the players you want to kill.
+For example, to kill only italian players:
+```
+victimCountriesToAvoidToKillList: ["EN","SV","PL","ES","PT","SI","CZ","DE","RO","LT","EL","NO","EG","RU","BR","TR","ID","AL","LV","SK","FR","FI","CS","CN","CNT","MS","BG"]
+
+```
+`"IT"` is not present in the list, so only italian players will be attacked.
+> :warning:  Beware that will be killed players also of other countries not present in lists, that I don't know the country code.
 
 # Local Development
 If you want to develop locally the bot, first of all you need to install:
