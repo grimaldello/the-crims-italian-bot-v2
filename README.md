@@ -292,6 +292,10 @@ victimIdsToAvoidToKillList: ["123456789"]
 ```
 # Avoid to kill user by country
 There is also the functionality to avoid to kill victim (and exit from rave) if country is in specific set.
+You can set country code list in the following settings:
+```
+victimCountriesToAvoidToKillList: ["COUNTRY_CODE_1", "COUNTRY_CODE_2", "..."]
+```
 For example, to avoid to kill italian and brazilian players:
 ```
 victimCountriesToAvoidToKillList: ["IT", "BR"],
