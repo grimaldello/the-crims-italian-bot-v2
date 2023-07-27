@@ -16,6 +16,8 @@ import { BotSettingsManager } from "../settings/BotSettingsManager";
 import { LogColor, Logger } from "../../logger/Logger";
 import { RandomUtils } from "../../commons/RandomUtils";
 import { ProfessionLevelMapping, CharacterSingleAssaultCriteria } from "../settings/BotSettings";
+import { RandomDetoxCalculatorStrategy } from "../detox/RandomDetoxCalculatorStrategy";
+import { IDetoxCalculatorStrategy } from "../detox/IDetoxCalculatorStrategy";
 
 @singleton()
 export class SingleAssaultBotWorkflow implements IBotWorkflow {
@@ -32,6 +34,8 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
     private user: User;
     private botSettingsManager: BotSettingsManager;
     private logger: Logger;
+    private detoxCalculatorStrategy: IDetoxCalculatorStrategy;
+
 
     constructor() {
         this.updateStatsWorkflow = container.resolve(ForceUpdateStatsBotWorkflow);
@@ -45,7 +49,7 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
         this.botSettingsManager = container.resolve(BotSettingsManager);
         this.logger = container.resolve(Logger);
         this.randomUtils = container.resolve(RandomUtils);
-
+        this.detoxCalculatorStrategy = container.resolve(RandomDetoxCalculatorStrategy);
     }
 
     public getSingleAssaultStaminaRequired(): number {
@@ -53,10 +57,7 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
     }
 
     private getRandomDetox(): number {
-        return this.randomUtils.intBetween(
-            this.botSettingsManager.getBotSettings().detox.threshold.min,
-            this.botSettingsManager.getBotSettings().detox.threshold.max
-        );
+        return this.detoxCalculatorStrategy.getDetoxThresholdValue();
     }
 
     private checkIfVictimInRaveIsToAvoidToKill(candidateVictim: Visitor): boolean {

@@ -11,6 +11,8 @@ import { IBotWorkflow } from "./commons/IBotWorkflow";
 import { BotSettingsManager } from "../settings/BotSettingsManager";
 import { LogColor, Logger } from "../../logger/Logger";
 import { RandomUtils } from "../../commons/RandomUtils";
+import { IDetoxCalculatorStrategy } from "../detox/IDetoxCalculatorStrategy";
+import { RandomDetoxCalculatorStrategy } from "../detox/RandomDetoxCalculatorStrategy";
 
 @singleton()
 export class SingleRobberyBotWorkflow implements IBotWorkflow {
@@ -25,6 +27,7 @@ export class SingleRobberyBotWorkflow implements IBotWorkflow {
     private botSettingsManager: BotSettingsManager;
     private logger: Logger;
     private randomUtils: RandomUtils;
+    private detoxCalculatorStrategy: IDetoxCalculatorStrategy;
 
     constructor() {
         this.updateStatsWorkflow = container.resolve(ForceUpdateStatsBotWorkflow);
@@ -36,6 +39,7 @@ export class SingleRobberyBotWorkflow implements IBotWorkflow {
         this.botSettingsManager = container.resolve(BotSettingsManager);
         this.logger = container.resolve(Logger);
         this.randomUtils = container.resolve(RandomUtils);
+        this.detoxCalculatorStrategy = container.resolve(RandomDetoxCalculatorStrategy);
     }
 
     private getSingleRobberyStaminaRequired(): number {
@@ -60,10 +64,7 @@ export class SingleRobberyBotWorkflow implements IBotWorkflow {
     }
 
     private getRandomDetox(): number {
-        return this.randomUtils.intBetween(
-            this.botSettingsManager.getBotSettings().detox.threshold.min,
-            this.botSettingsManager.getBotSettings().detox.threshold.max
-        );
+        return this.detoxCalculatorStrategy.getDetoxThresholdValue();
     }
 
     async execute(): Promise<void> {
