@@ -12,6 +12,7 @@ import { LinearDOMCoordinatePathFinderStrategy } from "../pathfinder/LinearDOMCo
 import { DOMCoordinateQueue } from "./DOMCoordinateQueue";
 import { BotSettingsManager } from "./settings/BotSettingsManager";
 import { WindDOMCoordinatePathFinderStrategy } from "../pathfinder/WindDOMCoordinatePathFinderStrategy";
+import { BotSpeedModifier } from "./BotSpeedModifier";
 
 @singleton()
 export class BotDOMHelper {
@@ -24,6 +25,8 @@ export class BotDOMHelper {
     private domCoordinateQueue: DOMCoordinateQueue;
     private botSettingsManager: BotSettingsManager;
     private logger: Logger;
+
+    private botSpeedModifier: BotSpeedModifier;
 
     private keyboardKeyForPauseResumeBot: string;
 
@@ -39,6 +42,8 @@ export class BotDOMHelper {
         this.domCoordinateQueue = container.resolve(DOMCoordinateQueue);
         this.logger = container.resolve(Logger);
         this.pathFinder = container.resolve(LinearDOMCoordinatePathFinderStrategy);
+
+        this.botSpeedModifier = container.resolve(BotSpeedModifier);
 
         this.setPathFinder();
 
@@ -149,8 +154,11 @@ export class BotDOMHelper {
         this.domCoordinateQueue.setQueue(
             this.pathFinder.findPath(startCoordinate, endCoordinate)
         );
+
+        const speedFactor: number = this.botSpeedModifier.getSpeedFactor();
+
         const numberOfCoordinatesToSkip: number = 
-            this.botSettingsManager.getBotSettings().mouse.numberOfCoordinatesToSkip;
+            this.botSettingsManager.getBotSettings().mouse.numberOfCoordinatesToSkip + speedFactor;
 
         while (this.domCoordinateQueue.getCounter() >= 0) {
 

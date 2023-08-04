@@ -13,6 +13,7 @@ import { LogColor, Logger } from "../../logger/Logger";
 import { RandomUtils } from "../../commons/RandomUtils";
 import { IDetoxCalculatorStrategy } from "../detox/IDetoxCalculatorStrategy";
 import { RandomDetoxCalculatorStrategy } from "../detox/RandomDetoxCalculatorStrategy";
+import { BotSpeedModifier } from "../BotSpeedModifier";
 
 @singleton()
 export class SingleRobberyBotWorkflow implements IBotWorkflow {
@@ -29,6 +30,8 @@ export class SingleRobberyBotWorkflow implements IBotWorkflow {
     private randomUtils: RandomUtils;
     private detoxCalculatorStrategy: IDetoxCalculatorStrategy;
 
+    private botSpeedModifier: BotSpeedModifier;
+
     constructor() {
         this.updateStatsWorkflow = container.resolve(ForceUpdateStatsBotWorkflow);
         this.detoxWorkflow = container.resolve(DetoxBotWorkflow);
@@ -40,6 +43,7 @@ export class SingleRobberyBotWorkflow implements IBotWorkflow {
         this.logger = container.resolve(Logger);
         this.randomUtils = container.resolve(RandomUtils);
         this.detoxCalculatorStrategy = container.resolve(RandomDetoxCalculatorStrategy);
+        this.botSpeedModifier = container.resolve(BotSpeedModifier);
     }
 
     private getSingleRobberyStaminaRequired(): number {
@@ -80,6 +84,7 @@ export class SingleRobberyBotWorkflow implements IBotWorkflow {
             if(this.user.stamina >= this.getSingleRobberyStaminaRequired()) {
 
                 await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.BUTTON_SINGLE_ROBBERY);
+
                 await this.waitUtils.waitForLastActionPerformed(BotEvents.ROB_DONE);
             }
             else {

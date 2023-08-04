@@ -67,6 +67,7 @@ export class BotSettingsManager {
                 }
             },
             singleAssault: {
+                mouseSpeedToPressAttackButton: 0,
                 criteriaAssault: {
                     CHARACTER_BROKER: {
                         maxLevel: 13,

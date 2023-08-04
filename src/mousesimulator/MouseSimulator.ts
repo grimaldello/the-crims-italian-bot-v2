@@ -5,7 +5,6 @@ import { RandomUtils } from "../commons/RandomUtils";
 @singleton()
 export class MouseSimulator {
 
-    // private dispatcher: DOMCoordinateEventDispatcher = container.resolve(DOMCoordinateEventDispatcher);
     private fakeCursor: HTMLElement;
     private randomUtils: RandomUtils;
 
@@ -13,7 +12,6 @@ export class MouseSimulator {
         this.randomUtils = container.resolve(RandomUtils);
         this.fakeCursor = this.createDefaultCursor();
         document.body.prepend(this.fakeCursor);
-
     }
 
     private createDefaultCursor(): HTMLElement {
@@ -28,7 +26,7 @@ export class MouseSimulator {
         const defaultFakeCursor = document.createElement("span");
         defaultFakeCursor.setAttribute("id", "fakeCursor");
         defaultFakeCursor.setAttribute("style", cursorStyle);
-        defaultFakeCursor.style.top = this.randomUtils.intBetween(0, window.innerWidth) + "px";
+        defaultFakeCursor.style.top = this.randomUtils.intBetween(0, window.innerHeight) + "px";
         defaultFakeCursor.style.left = this.randomUtils.intBetween(0, window.innerWidth) + "px";
         return defaultFakeCursor;
     }

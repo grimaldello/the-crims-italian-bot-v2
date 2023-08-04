@@ -262,6 +262,9 @@ The `maxLevel` property, indicates the max level, for a specific profession, the
 
 The `minRespect` and `maxRespect` properties, indicate the min and max respect, for a specific profession, the bot should consider in order to match the respect criteria. The criteria is matched if victim respect is less or equals than `maxRespect` and greater or equals than `minRespect`.
 
+You can also set a different speed for the path of the fake cursor to **Attack** button by changing the setting: `mouseSpeedToPressAttackButton`.
+Since it is a factor that is added/subtracted to the base speed of the bot, you have to set a negative value to slow down the speed of the fake cursor, or set a positive factor > 0 to speed up the fake cursor (set to 0 to not change speed).
+
 **If both level criteria and respect criteria are matched,the victim will be assaulted** (otherwise exit from rave)
 
 Example of configuration for Robber profession:
