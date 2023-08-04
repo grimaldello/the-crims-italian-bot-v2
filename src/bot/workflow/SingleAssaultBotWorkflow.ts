@@ -18,6 +18,7 @@ import { RandomUtils } from "../../commons/RandomUtils";
 import { ProfessionLevelMapping, CharacterSingleAssaultCriteria } from "../settings/BotSettings";
 import { RandomDetoxCalculatorStrategy } from "../detox/RandomDetoxCalculatorStrategy";
 import { IDetoxCalculatorStrategy } from "../detox/IDetoxCalculatorStrategy";
+import { BotSpeedModifier } from "../BotSpeedModifier";
 
 @singleton()
 export class SingleAssaultBotWorkflow implements IBotWorkflow {
@@ -37,6 +38,8 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
     private detoxCalculatorStrategy: IDetoxCalculatorStrategy;
 
 
+    private botSpeedModifier: BotSpeedModifier;
+
     constructor() {
         this.updateStatsWorkflow = container.resolve(ForceUpdateStatsBotWorkflow);
         this.detoxWorkflow = container.resolve(DetoxBotWorkflow);
@@ -50,6 +53,7 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
         this.logger = container.resolve(Logger);
         this.randomUtils = container.resolve(RandomUtils);
         this.detoxCalculatorStrategy = container.resolve(RandomDetoxCalculatorStrategy);
+        this.botSpeedModifier = container.resolve(BotSpeedModifier);
     }
 
     public getSingleAssaultStaminaRequired(): number {
@@ -194,6 +198,10 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
         this.logger.info(`ASSAULT!!`, LogColor.SUCCESS);
 
         const start: number = Date.now();
+        this.botSpeedModifier.setSpeedFactor(
+            this.botSettingsManager.getBotSettings().singleAssault.mouseSpeedToPressAttackButton
+        );
+
         // Open Assault drop down menu
         await this.botDomHelper.moveToElementByQuerySelectorAndClick(DOMElementSelector.ASSAULT_DROPDOWN_MENU);
         await this.waitUtils.waitMilliSeconds(10);
@@ -216,6 +224,7 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
         const finish: number = Date.now();
 
         this.logger.info(`Assault took: ${(finish - start)/1000} seconds`);
+        this.botSpeedModifier.setSpeedFactor(0);
 
         await this.waitUtils.waitRandomMillisecondsBetween(
             this.botSettingsManager.getBotSettings()

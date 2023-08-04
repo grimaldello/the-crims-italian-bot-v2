@@ -48,6 +48,7 @@ export interface DetoxSettings {
 }
 
 export interface SingleAssaultSettings {
+    mouseSpeedToPressAttackButton: number,
     forceExitAfterMillis: number,
     millisecondsToWaitAfterAssault: {
         min: number,
