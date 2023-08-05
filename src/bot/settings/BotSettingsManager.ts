@@ -27,7 +27,8 @@ export class BotSettingsManager {
                 millisecondsToWaitBeforeExitWhenVisitorComeInsideRave: {
                     min: 100,
                     max: 400
-                }
+                },
+                enterOnlyHookerMansion: true
             },
             coordinatePathStrategy: {
                 useLinearPathStrategy: false,

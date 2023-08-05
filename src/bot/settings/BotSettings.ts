@@ -116,6 +116,7 @@ export interface WaitToBeKilled {
         min: number,
         max: number
     },
+    enterOnlyHookerMansion: boolean
 }
 
 export interface BotSettings {
