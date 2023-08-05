@@ -282,6 +282,12 @@ The above configuration is valid for Robber victim that:
 You can also set a different speed for the path of the fake cursor to **Attack** button by changing the setting: `mouseSpeedToPressAttackButton`.
 Since it is a factor that is added/subtracted to the base speed of the bot, you have to set a negative value to slow down the speed of the fake cursor, or set a positive factor > 0 to speed up the fake cursor (set to 0 to not change speed).
 
+It is also possible to set a list of victim usernames or ids to kill, without any restriction on victim respect and level. This is useful when you want to kill specific victim that is your friend (for example when a friend is using wait to be killed functionality yo donate kill).
+The settings where put usernames and/or ids are:
+```js
+    victimToAttackList: ["username1", "username2", ...],
+    victimIdsToAttackList: [123, 456, ...]
+```
 # Avoid to kill user by ID or Username
 
 You can also set a list of victims username or victims id to avoid to kill and exit instantly from the rave.
