@@ -210,6 +210,8 @@ waitToBeKilled: {
     ...
 },
 ```
+There is also an option to enter only in **Hooker Mansion** while performing wait to be killed in order to increment the chances to "meet with friend".
+The option to set (enabled by default) is: `enterOnlyHookerMansion`.
 
 # Hunting
 You have to set the max level, min and max respect for each profession in the following settings:
