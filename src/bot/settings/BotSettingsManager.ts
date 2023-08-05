@@ -125,7 +125,9 @@ export class BotSettingsManager {
                 },
                 victimUsernameToAvoidToKillList: [],
                 victimIdsToAvoidToKillList: [],
-                victimCountriesToAvoidToKillList: []
+                victimCountriesToAvoidToKillList: [],
+                victimToAttackList: [],
+                victimIdsToAttackList: []
             },
             singleRobbery: {
                 makeRandomMovement: true

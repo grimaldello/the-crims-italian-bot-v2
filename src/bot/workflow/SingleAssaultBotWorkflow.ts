@@ -151,7 +151,39 @@ export class SingleAssaultBotWorkflow implements IBotWorkflow {
             this.logger.info(`NOT Matched level criteria`, LogColor.WARNING);
         }
 
-        return isMatchedRespectCriteria && isMatchedLevelCriteria;
+        let isMatchedKillUserInListCriteria: boolean = this.checkKillUserInListCriteria(candidateVictim);
+
+        return (isMatchedRespectCriteria && isMatchedLevelCriteria) || isMatchedKillUserInListCriteria;
+    }
+
+    private checkKillUserInListCriteria(candidateVictim: Visitor) {
+        let isMatchedKillUserInListCriteria: boolean = false;
+
+        const idsVictimToAttackList: string[] = 
+            this.botSettingsManager
+                .getBotSettings()
+                .singleAssault.victimIdsToAttackList;
+
+        this.logger.info(`Victim id: ${candidateVictim.id}`, LogColor.WARNING);
+        this.logger.info(`Checking if victim id is in kill list [${idsVictimToAttackList}]`, LogColor.WARNING);
+        if (idsVictimToAttackList.includes("" + candidateVictim.id)) {
+            this.logger.info(`Id victim is in kill list`, LogColor.WARNING);
+            isMatchedKillUserInListCriteria = true;
+        }
+
+        const usernameVictimToAttackList: string[] = 
+            this.botSettingsManager
+                .getBotSettings()
+                .singleAssault
+                .victimIdsToAttackList.map((e) => e.toLowerCase());
+
+        this.logger.info(`Victim id: ${candidateVictim.id}`, LogColor.WARNING);
+        this.logger.info(`Checking if victim username is in kill list:[${usernameVictimToAttackList}]`, LogColor.WARNING);
+        if (usernameVictimToAttackList.includes("" + candidateVictim.username?.toLowerCase())) {
+            this.logger.info(`Victim username is kill list`, LogColor.WARNING);
+            isMatchedKillUserInListCriteria = true;
+        }
+        return isMatchedKillUserInListCriteria;
     }
 
     private printCandidateVictimInfo(candidateVictim: Visitor) {
