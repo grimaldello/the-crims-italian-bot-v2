@@ -58,8 +58,8 @@ export class WaitToBeKilledBotWorkflow implements IBotWorkflow {
         // happening after pressing the enter rave button
         let clickEnterRaveCallback = async () =>{
             this.logger.info(`Clicking on Enter button...`);
-            const nextRaveIndex: number = this.randomUtils.intBetween(1, 8);
-            await this.botDomHelper.moveToElementByQueryAllIndexSelectorAndClick(DOMElementSelector.BUTTON_ENTER_RAVE, nextRaveIndex);
+            const raveIndex = this.getRaveIndexBasedOnSettings();
+            await this.botDomHelper.moveToElementByQueryAllIndexSelectorAndClick(DOMElementSelector.BUTTON_ENTER_RAVE, raveIndex);
     
         };
         // Start immediately the check
@@ -70,6 +70,33 @@ export class WaitToBeKilledBotWorkflow implements IBotWorkflow {
         await this.waitUtils.waitForLastActionPerformed(BotEvents.ENTER_NIGHTCLUB_DONE);
         // If correctly entered in rave, clear set setInterval
         clearInterval(intervalPid);
+    }
+
+    private getRaveIndexBasedOnSettings() {
+
+        const enterOnlyHookerMansion: boolean = 
+            this.botSettingsManager.getBotSettings().waitToBeKilled.enterOnlyHookerMansion;
+        
+        let indexRave: number = 0;
+
+        if(enterOnlyHookerMansion) {
+            const indexOfHookerMansionList: number[] = [];
+
+            document.querySelectorAll('[class="well well-small"]').forEach((e: any, index: number) => {
+                if ((e.innerText as string).toLowerCase().indexOf('hooker') > -1) {
+                    indexOfHookerMansionList.push(index);
+                }
+            });
+    
+            const randomIndexHookerMansionList: number = this.randomUtils.intBetween(0, indexOfHookerMansionList.length - 1);
+            const indexHookerMansion: number = indexOfHookerMansionList[randomIndexHookerMansionList];
+            indexRave = indexHookerMansion;
+        }
+        else {
+            indexRave = this.randomUtils.intBetween(1, 8);
+        }
+
+        return indexRave;
     }
 
     private async waitForVisitors() {
