@@ -1,3 +1,8 @@
+# :warning: WARNING! 
+It seems that by now the use of this bot is easily identified by the admins of The Crims. I do not know what checks they do precisely, but from the latest feedback received from users of the bot, I can confirm that it is easily detected.
+I strongly advise against using it in a mass manner, as the chances of being banned are very high.
+
+Use it at your own risk!
 # The Crims Italian Bot V2
 
 This is a new version of the bot [The Crims Italian Bot](https://github.com/grimaldello/the-crims-italian-bot) that I've developed to play the online game [The Crims](https://www.thecrims.com) without manually performing most of the tedious tasks of the game.
